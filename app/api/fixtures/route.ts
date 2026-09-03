@@ -1,10 +1,10 @@
-const leagueMap: Record<string, string> = {
-  'UEFA Champions League': 'Champions League',
-  'UEFA Europa League': 'Europa League',
-  'English Premier League': 'Premier League',
-  'Italian Serie A': 'Serie A',
-  'Spanish La Liga': 'La Liga',
-};
+const leagues = [
+  { id: '4480', name: 'Champions League' },
+  { id: '4481', name: 'Europa League' },
+  { id: '4328', name: 'Premier League' },
+  { id: '4332', name: 'Serie A' },
+  { id: '4335', name: 'La Liga' },
+] as const;
 
 type SportsDbEvent = {
   idEvent: string;
@@ -36,13 +36,18 @@ export async function GET(request: Request) {
   if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return Response.json({ error: 'Invalid date' }, { status: 400 });
 
   try {
-    const response = await fetch(`https://www.thesportsdb.com/api/v1/json/123/eventsday.php?d=${date}&s=Soccer`, { headers: { accept: 'application/json' } });
-    if (!response.ok) throw new Error('Schedule provider unavailable');
-    const data = await response.json() as { events: SportsDbEvent[] | null };
-    const fixtures = (data.events ?? []).filter((event) => leagueMap[event.strLeague]).map((event) => ({
+    const results = await Promise.allSettled(leagues.map(async (league) => {
+      const response = await fetch(`https://www.thesportsdb.com/api/v1/json/123/eventsday.php?d=${date}&l=${league.id}`, { headers: { accept: 'application/json' } });
+      if (!response.ok) throw new Error('Schedule provider unavailable');
+      const data = await response.json() as { events: SportsDbEvent[] | null };
+      return (data.events ?? []).map((event) => ({ event, competition: league.name }));
+    }));
+    if (results.every((result) => result.status === 'rejected')) throw new Error('Schedule provider unavailable');
+    const events = results.flatMap((result) => result.status === 'fulfilled' ? result.value : []);
+    const fixtures = events.map(({ event, competition }) => ({
       id: event.idEvent,
       time: sofiaTime(event),
-      competition: leagueMap[event.strLeague],
+      competition,
       home: event.strHomeTeam,
       away: event.strAwayTeam,
       venue: event.strVenue || 'Venue TBA',
@@ -50,7 +55,7 @@ export async function GET(request: Request) {
       note: event.strLeague.includes('Champions') || event.strLeague.includes('Europa') ? 'European night' : 'League football',
       homeBadge: event.strHomeTeamBadge,
       awayBadge: event.strAwayTeamBadge,
-    }));
+    })).sort((a, b) => a.time.localeCompare(b.time));
     return Response.json({ fixtures, source: 'live' }, { headers: { 'Cache-Control': 'public, max-age=300' } });
   } catch {
     return Response.json({ fixtures: [], source: 'unavailable' }, { status: 503 });
