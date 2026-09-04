@@ -5,7 +5,7 @@
 :root { --ink:#e7ecf5; --paper:#0b1220; --lime:#37d67a; --line:#22314f; --muted:#93a1bd; --forest:#121b2e; --panel-2:#182541; }
 * { box-sizing: border-box; }
 html { scroll-behavior:smooth; }
-body { margin:0; background:radial-gradient(1200px 600px at 70% -10%,#16233f 0%,var(--paper) 60%); color:var(--ink); font-family:var(--font-geist-sans),Arial,sans-serif; }
+body { margin:0; background:radial-gradient(1200px 600px at 70% -10%,#16233f 0%,var(--paper) 60%); color:var(--ink); font-family:"Avenir Next","SF Pro Display",Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; font-feature-settings:"ss01" 1,"kern" 1; }
 button,a { font:inherit; } button { color:inherit; }
 .site-header { height:74px; display:flex; align-items:center; justify-content:space-between; max-width:1180px; margin:auto; padding:0 28px; border-bottom:1px solid var(--line); }
 .brand { display:flex; align-items:center; gap:11px; color:inherit; text-decoration:none; font-weight:850; font-size:14px; letter-spacing:.16em; }
@@ -15,7 +15,7 @@ button,a { font:inherit; } button { color:inherit; }
 .page-shell { max-width:1080px; margin:auto; padding:70px 28px 60px; }
 .intro-row { display:flex; align-items:end; justify-content:space-between; gap:40px; }
 .eyebrow { margin:0 0 15px; font-size:11px; font-weight:800; letter-spacing:.18em; color:var(--muted); }
-h1 { margin:0; font-size:clamp(54px,8vw,96px); line-height:.86; letter-spacing:-.065em; font-weight:760; }
+h1 { margin:0; max-width:760px; font-size:clamp(52px,8vw,94px); line-height:.88; letter-spacing:-.075em; font-weight:800; text-wrap:balance; }
 .intro-copy { max-width:330px; margin:0 0 4px; font-size:17px; line-height:1.55; color:var(--muted); }
 .controls { display:flex; justify-content:space-between; align-items:center; margin-top:54px; }
 .day-switch { display:flex; border:1px solid var(--line); border-radius:10px; padding:4px; background:var(--forest); }
