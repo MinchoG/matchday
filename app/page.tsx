@@ -52,7 +52,7 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       <header className="site-header">
-        <a className="brand" href="#top" aria-label="Matchday home"><span className="brand-mark">M</span><span>MATCHDAY</span></a>
+        <a className="brand" href="https://mincho.dev" aria-label="Back to mincho.dev"><span className="brand-mark">M</span><span>mincho.dev / matchday</span></a>
         <div className="live-pill"><span /> {feed === 'loading' ? 'Checking fixtures…' : feed === 'live' ? 'Live schedule · updates daily' : 'Preview schedule'}</div>
       </header>
       <section id="top" className="page-shell">
