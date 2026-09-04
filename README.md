@@ -1,6 +1,7 @@
 # Matchday
 
-A compact today-and-tomorrow football fixture guide for:
+A compact European football guide covering the previous seven days, today and
+the next seven days for:
 
 - UEFA Champions League
 - UEFA Europa League
@@ -8,9 +9,10 @@ A compact today-and-tomorrow football fixture guide for:
 - Serie A
 - La Liga
 
-Kickoff times are presented in `Europe/Sofia`. The current implementation uses
-TheSportsDB through a server-side route so the browser never depends on third-party
-CORS behavior. A football-data.org token can be added later as the primary source.
+Kickoff times are presented in `Europe/Sofia`. Scores and fixtures come from the
+free TheSportsDB API and are committed as a static archive. The scheduled GitHub
+Action refreshes the archive every day at 05:15 UTC; it can also be run manually
+from the Actions tab.
 
 ## Local development
 
@@ -25,5 +27,5 @@ npm run dev
 npm run build
 ```
 
-The application source lives in `app/`; the fixture adapter is
-`app/api/fixtures/route.ts` and the interface is `app/page.tsx`.
+The React interface lives in `src/`, the generated archive is
+`public/data/fixtures.json`, and `scripts/update-fixtures.mjs` maintains it.
