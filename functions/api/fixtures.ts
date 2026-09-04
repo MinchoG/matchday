@@ -16,6 +16,9 @@ type SportsDbEvent = {
   strVenue?: string;
   strHomeTeamBadge?: string;
   strAwayTeamBadge?: string;
+  intHomeScore?: string | null;
+  intAwayScore?: string | null;
+  strStatus?: string | null;
 };
 
 function heatFor(event: SportsDbEvent) {
@@ -56,6 +59,9 @@ export async function onRequestGet(context: { request: Request }) {
       note: event.strLeague.includes('Champions') || event.strLeague.includes('Europa') ? 'European night' : 'League football',
       homeBadge: event.strHomeTeamBadge,
       awayBadge: event.strAwayTeamBadge,
+      homeScore: event.intHomeScore == null ? null : Number(event.intHomeScore),
+      awayScore: event.intAwayScore == null ? null : Number(event.intAwayScore),
+      status: event.strStatus || 'Finished',
     })).sort((a, b) => a.time.localeCompare(b.time));
     return Response.json({ fixtures, source: 'live' }, { headers: { 'Cache-Control': 'public, max-age=300' } });
   } catch {

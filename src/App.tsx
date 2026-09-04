@@ -1,101 +1,64 @@
-'use client';
-
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { CalendarDays, ChevronRight, Clock3, Flame, RefreshCw } from 'lucide-react';
 
-type Day = 'today' | 'tomorrow';
 type Competition = 'All' | 'Champions League' | 'Europa League' | 'Premier League' | 'Serie A' | 'La Liga';
-
+type Fixture = { id: string; time: string; competition: string; home: string; away: string; homeCode: string; awayCode: string; venue: string; heat: number; note: string; homeScore: number | null; awayScore: number | null; status: string };
 const competitions: Competition[] = ['All', 'Champions League', 'Europa League', 'Premier League', 'Serie A', 'La Liga'];
-const previewFixtures = [
-  { day: 'today', time: '19:45', competition: 'Champions League', home: 'Inter', away: 'Liverpool', homeCode: 'INT', awayCode: 'LIV', venue: 'San Siro', heat: 96, note: 'European heavyweight tie' },
-  { day: 'today', time: '22:00', competition: 'La Liga', home: 'Real Sociedad', away: 'Villarreal', homeCode: 'RSO', awayCode: 'VIL', venue: 'Reale Arena', heat: 82, note: 'Two attacking sides' },
-  { day: 'today', time: '21:45', competition: 'Serie A', home: 'Roma', away: 'Atalanta', homeCode: 'ROM', awayCode: 'ATA', venue: 'Stadio Olimpico', heat: 88, note: 'Champions League chase' },
-  { day: 'tomorrow', time: '22:00', competition: 'Europa League', home: 'Real Betis', away: 'Feyenoord', homeCode: 'BET', awayCode: 'FEY', venue: 'La Cartuja', heat: 89, note: 'Knockout football' },
-  { day: 'tomorrow', time: '19:30', competition: 'Premier League', home: 'Brighton', away: 'Tottenham', homeCode: 'BHA', awayCode: 'TOT', venue: 'Amex Stadium', heat: 91, note: 'Goals usually follow' },
-  { day: 'tomorrow', time: '21:45', competition: 'Serie A', home: 'Bologna', away: 'Napoli', homeCode: 'BOL', awayCode: 'NAP', venue: "Renato Dall'Ara", heat: 84, note: 'A tactical test' },
-] as const;
+const days = [0, 1, 2, 3, 4, 5, 6];
 
-type Fixture = { id?: string; day: Day; time: string; competition: string; home: string; away: string; homeCode: string; awayCode: string; venue: string; heat: number; note: string };
-
+function dateAt(offset: number) { return new Date(Date.now() + offset * 86400000); }
 function dateKey(offset: number) {
-  const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Sofia', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date(Date.now() + offset * 86400000));
+  const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Sofia', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(dateAt(offset));
   return `${parts.find((p) => p.type === 'year')?.value}-${parts.find((p) => p.type === 'month')?.value}-${parts.find((p) => p.type === 'day')?.value}`;
 }
+function dayName(offset: number) { return offset === 0 ? 'Today' : offset === 1 ? 'Tomorrow' : new Intl.DateTimeFormat('en-GB', { weekday: 'short' }).format(dateAt(offset)); }
+function dayDate(offset: number) { return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' }).format(dateAt(offset)); }
+function hasScore(match: Fixture) { return Number.isFinite(match.homeScore) && Number.isFinite(match.awayScore); }
 
-function formatDate(offset: number) {
-  const date = new Date();
-  date.setDate(date.getDate() + offset);
-  return new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }).format(date);
-}
-
-export default function Home() {
-  const [day, setDay] = useState<Day>('today');
+export default function App() {
+  const [day, setDay] = useState(0);
   const [competition, setCompetition] = useState<Competition>('All');
-  const [refreshed, setRefreshed] = useState(false);
-  const [fixtures, setFixtures] = useState<Fixture[]>(previewFixtures.map((fixture) => ({ ...fixture })));
-  const [feed, setFeed] = useState<'loading' | 'live' | 'preview'>('loading');
-  const loadFixtures = useCallback(async () => {
-    setRefreshed(true);
+  const [fixturesByDay, setFixturesByDay] = useState<Record<number, Fixture[]>>({});
+  const [loading, setLoading] = useState(false);
+  const [failed, setFailed] = useState(false);
+
+  const loadFixtures = useCallback(async (offset: number) => {
+    setLoading(true); setFailed(false);
     try {
-      const responses = await Promise.all([0, 1].map((offset) => fetch(`/api/fixtures?date=${dateKey(offset)}`).then((result) => result.ok ? result.json() : Promise.reject())));
-      const live = responses.flatMap((payload, offset) => payload.fixtures.map((fixture: Omit<Fixture, 'day' | 'homeCode' | 'awayCode'>) => ({ ...fixture, day: offset === 0 ? 'today' : 'tomorrow', homeCode: fixture.home.slice(0, 3).toUpperCase(), awayCode: fixture.away.slice(0, 3).toUpperCase() })));
-      setFixtures(live);
-      setFeed('live');
-    } catch { setFeed('preview'); }
-    finally { window.setTimeout(() => setRefreshed(false), 600); }
+      const response = await fetch(`/api/fixtures?date=${dateKey(offset)}`);
+      if (!response.ok) throw new Error();
+      const payload = await response.json();
+      const matches = payload.fixtures.map((fixture: Omit<Fixture, 'homeCode' | 'awayCode'>) => ({ ...fixture, homeCode: fixture.home.slice(0, 3).toUpperCase(), awayCode: fixture.away.slice(0, 3).toUpperCase() }));
+      setFixturesByDay((current) => ({ ...current, [offset]: matches }));
+    } catch { setFailed(true); }
+    finally { setLoading(false); }
   }, []);
-  useEffect(() => { void loadFixtures(); }, [loadFixtures]);
-  const visible = useMemo(() => fixtures.filter((match) => match.day === day && (competition === 'All' || match.competition === competition)), [fixtures, day, competition]);
+
+  useEffect(() => { if (!fixturesByDay[day]) void loadFixtures(day); }, [day, fixturesByDay, loadFixtures]);
+  useEffect(() => { if (day !== 0) return; const timer = window.setInterval(() => void loadFixtures(0), 60000); return () => window.clearInterval(timer); }, [day, loadFixtures]);
+
+  const fixtures = fixturesByDay[day] ?? [];
+  const visible = useMemo(() => fixtures.filter((match) => competition === 'All' || match.competition === competition), [fixtures, competition]);
   const topPick = visible.reduce<Fixture | undefined>((best, match) => !best || match.heat > best.heat ? match : best, undefined);
+  const selectedLabel = day === 0 ? 'Today’s games' : day === 1 ? 'Tomorrow’s games' : `${new Intl.DateTimeFormat('en-GB', { weekday: 'long' }).format(dateAt(day))}’s games`;
 
   return (
     <main className="app">
-      <header className="site-header">
-        <a className="brand" href="https://mincho.dev" aria-label="Back to mincho.dev"><span className="brand-mark">M</span><span>mincho.dev / matchday</span></a>
-        <div className="live-pill"><span /> {feed === 'loading' ? 'Checking fixtures…' : feed === 'live' ? 'Live schedule · updates daily' : 'Preview schedule'}</div>
-      </header>
-      <section id="top" className="page-shell">
-        <div className="intro-row">
-          <div><p className="eyebrow">YOUR FOOTBALL SHORTLIST</p><h1>What’s worth<br />watching?</h1></div>
-          <p className="intro-copy">The best games across Europe, cut down to the ones you’ll actually want to watch.</p>
-        </div>
-        <div className="controls" aria-label="Fixture filters">
-          <div className="day-switch">
-            {(['today', 'tomorrow'] as Day[]).map((item, index) => (
-              <button key={item} onClick={() => setDay(item)} className={day === item ? 'active' : ''}><span>{item}</span><small>{formatDate(index)}</small></button>
-            ))}
-          </div>
-          <button className="refresh" onClick={() => void loadFixtures()} aria-label="Refresh fixtures"><RefreshCw size={17} className={refreshed ? 'spin' : ''} /> {refreshed ? 'Checking' : 'Refresh'}</button>
-        </div>
-        <nav className="competition-tabs" aria-label="Competitions">
-          {competitions.map((item) => <button key={item} onClick={() => setCompetition(item)} className={competition === item ? 'active' : ''}>{item}</button>)}
-        </nav>
-        {topPick && (
-          <article className="spotlight">
-            <div className="spotlight-label"><Flame size={15} fill="currentColor" /> TOP PICK · {topPick.heat}% MATCH HEAT</div>
-            <div className="spotlight-main">
-              <div className="team"><span className="crest cream">{topPick.homeCode}</span><strong>{topPick.home}</strong></div>
-              <div className="kickoff"><small>{topPick.competition}</small><b>{topPick.time}</b><span><Clock3 size={13} /> Sofia time</span></div>
-              <div className="team"><span className="crest red">{topPick.awayCode}</span><strong>{topPick.away}</strong></div>
-            </div>
-            <footer><span>{topPick.note}</span><span>{topPick.venue} <ChevronRight size={15} /></span></footer>
-          </article>
-        )}
-        <div className="section-heading"><div><p className="eyebrow">FULL SLATE</p><h2>{day === 'today' ? 'Today’s games' : 'Tomorrow’s games'}</h2></div><span>{visible.length} matches selected</span></div>
+      <header className="site-header"><a className="brand" href="https://mincho.dev"><span className="brand-mark">M</span><span>mincho.dev / matchday</span></a><div className="live-pill"><span /> {loading ? 'Checking scores…' : 'Scores refresh every minute'}</div></header>
+      <section className="page-shell">
+        <div className="intro-row"><div><p className="eyebrow">YOUR FOOTBALL GAMEWEEK</p><h1>What’s worth<br />watching?</h1></div><p className="intro-copy">Seven days of the best games across Europe, with scores and Sofia kickoff times.</p></div>
+
+        <div className="controls"><div className="day-switch week-strip">{days.map((offset) => <button key={offset} onClick={() => setDay(offset)} className={day === offset ? 'active' : ''}><span>{dayName(offset)}</span><small>{dayDate(offset)}</small></button>)}</div><button className="refresh" onClick={() => void loadFixtures(day)}><RefreshCw size={17} className={loading ? 'spin' : ''} /> {loading ? 'Checking' : 'Refresh'}</button></div>
+        <nav className="competition-tabs" aria-label="Competitions">{competitions.map((item) => <button key={item} onClick={() => setCompetition(item)} className={competition === item ? 'active' : ''}>{item}</button>)}</nav>
+
+        {topPick && <article className="spotlight"><div className="spotlight-label"><Flame size={15} fill="currentColor" /> TOP PICK · {topPick.heat}% MATCH HEAT</div><div className="spotlight-main"><div className="team"><span className="crest cream">{topPick.homeCode}</span><strong>{topPick.home}</strong></div><div className="kickoff"><small>{topPick.competition}</small><b>{hasScore(topPick) ? `${topPick.homeScore}–${topPick.awayScore}` : topPick.time}</b><span>{hasScore(topPick) ? topPick.status : <><Clock3 size={13} /> Sofia time</>}</span></div><div className="team"><span className="crest red">{topPick.awayCode}</span><strong>{topPick.away}</strong></div></div><footer><span>{topPick.note}</span><span>{topPick.venue} <ChevronRight size={15} /></span></footer></article>}
+
+        <div className="section-heading"><div><p className="eyebrow">FULL SLATE</p><h2>{selectedLabel}</h2></div><span>{visible.length} matches selected</span></div>
         <section className="fixture-list" aria-live="polite">
-          {visible.map((match) => (
-            <article className="fixture" key={`${match.home}-${match.away}`}>
-              <time>{match.time}</time>
-              <div className="fixture-teams"><span><i className="mini-crest">{match.homeCode.slice(0, 1)}</i>{match.home}</span><span><i className="mini-crest away">{match.awayCode.slice(0, 1)}</i>{match.away}</span></div>
-              <div className="fixture-meta"><span>{match.competition}</span><small>{match.note}</small></div>
-              <div className="heat"><Flame size={14} /> {match.heat}</div>
-              <button aria-label={`View ${match.home} versus ${match.away}`}><ChevronRight size={20} /></button>
-            </article>
-          ))}
-          {!visible.length && <div className="empty"><CalendarDays size={28} /><strong>No games in this competition</strong><span>Try another league or switch the day.</span></div>}
+          {visible.map((match) => <article className="fixture" key={match.id}><div className={hasScore(match) ? 'score-cell' : ''}>{hasScore(match) ? <><b>{match.homeScore}–{match.awayScore}</b><small>{match.status}</small></> : <time>{match.time}</time>}</div><div className="fixture-teams"><span><i className="mini-crest">{match.homeCode[0]}</i>{match.home}</span><span><i className="mini-crest away">{match.awayCode[0]}</i>{match.away}</span></div><div className="fixture-meta"><span>{match.competition}</span><small>{match.note}</small></div><div className="heat"><Flame size={14} /> {match.heat}</div><button aria-label={`View ${match.home} versus ${match.away}`}><ChevronRight size={20} /></button></article>)}
+          {!loading && !visible.length && <div className="empty"><CalendarDays size={28} /><strong>{failed ? 'Couldn’t update this day' : 'No games in this competition'}</strong><span>{failed ? 'Use Refresh to try again.' : 'Try another league or day.'}</span></div>}
         </section>
-        <p className="data-note">{feed === 'live' ? 'Live schedule from TheSportsDB' : 'Preview fixture data'} · Times shown in Europe/Sofia</p>
+        <p className="data-note">TheSportsDB free data · Scores may be delayed · Europe/Sofia time</p>
       </section>
     </main>
   );
