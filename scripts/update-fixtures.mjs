@@ -41,6 +41,11 @@ function sofiaTime(event) {
   }).format(new Date(timestamp));
 }
 
+function kickoffTimestamp(event) {
+  if (!event.strTimestamp) return null;
+  return event.strTimestamp.endsWith('Z') ? event.strTimestamp : `${event.strTimestamp}Z`;
+}
+
 async function fetchLeague(date, league, attempt = 1) {
   const url = `https://www.thesportsdb.com/api/v1/json/123/eventsday.php?d=${date}&l=${league.id}`;
   const response = await fetch(url, { headers: { accept: 'application/json' } });
@@ -56,6 +61,7 @@ async function fetchLeague(date, league, attempt = 1) {
     id: event.idEvent,
     date,
     time: sofiaTime(event),
+    kickoff: kickoffTimestamp(event),
     competition: league.name,
     home: event.strHomeTeam,
     away: event.strAwayTeam,
@@ -68,6 +74,20 @@ async function fetchLeague(date, league, attempt = 1) {
     awayScore: event.intAwayScore == null ? null : Number(event.intAwayScore),
     status: event.strStatus || (event.intHomeScore != null ? 'Finished' : 'Scheduled'),
   }));
+}
+
+async function fetchResult(fixture) {
+  const response = await fetch(`https://www.thesportsdb.com/api/v1/json/123/lookupevent.php?id=${fixture.id}`, { headers: { accept: 'application/json' } });
+  if (!response.ok) return fixture;
+  const event = (await response.json()).events?.[0];
+  if (!event || event.intHomeScore == null || event.intAwayScore == null) return fixture;
+  return {
+    ...fixture,
+    homeScore: Number(event.intHomeScore),
+    awayScore: Number(event.intAwayScore),
+    status: event.strStatus || 'FT',
+    kickoff: kickoffTimestamp(event) || fixture.kickoff,
+  };
 }
 
 async function existingFixtures() {
@@ -95,9 +115,23 @@ for (const [index, date] of dates.entries()) {
 
 if (!collected.length) throw new Error('No fixture data was returned; keeping the current archive.');
 
+const resultCutoff = dateKey(0);
+for (let index = 0; index < collected.length; index += 1) {
+  const fixture = collected[index];
+  if (fixture.date < resultCutoff && (fixture.homeScore == null || fixture.awayScore == null)) {
+    collected[index] = await fetchResult(fixture);
+    await delay(2_100);
+  }
+}
+
 const inRange = new Set(dates);
 const merged = new Map(previous.filter((fixture) => inRange.has(fixture.date)).map((fixture) => [`${fixture.id}:${fixture.date}`, fixture]));
-for (const fixture of collected) merged.set(`${fixture.id}:${fixture.date}`, fixture);
+for (const fixture of collected) {
+  const key = `${fixture.id}:${fixture.date}`;
+  const stored = merged.get(key);
+  const keepStoredResult = fixture.homeScore == null && fixture.awayScore == null && stored?.homeScore != null && stored?.awayScore != null;
+  merged.set(key, keepStoredResult ? { ...fixture, homeScore: stored.homeScore, awayScore: stored.awayScore, status: stored.status } : fixture);
+}
 const fixtures = [...merged.values()].sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
 
 await mkdir(new URL('../public/data/', import.meta.url), { recursive: true });
