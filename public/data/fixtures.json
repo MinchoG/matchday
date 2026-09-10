@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-09T09:52:09.198Z",
+  "generatedAt": "2026-09-10T09:50:12.209Z",
   "timezone": "Europe/Sofia",
-  "from": "2026-09-02",
-  "to": "2026-09-16",
+  "from": "2026-09-03",
+  "to": "2026-09-17",
   "fixtures": [
     {
       "id": "2506226",
@@ -510,9 +510,9 @@
       "note": "European night",
       "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/yppyux1473454085.png",
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/9mzq961590148192.png",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "NS"
+      "homeScore": 3,
+      "awayScore": 1,
+      "status": "FT"
     },
     {
       "id": "2594541",
@@ -527,9 +527,9 @@
       "note": "European night",
       "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/kfaher1737969724.png",
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/0ulh3q1719984315.png",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "NS"
+      "homeScore": 2,
+      "awayScore": 1,
+      "status": "FT"
     },
     {
       "id": "2594562",
@@ -544,9 +544,9 @@
       "note": "European night",
       "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/rwqrrq1473504808.png",
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/uzkg701781199823.png",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "NS"
+      "homeScore": 6,
+      "awayScore": 1,
+      "status": "FT"
     },
     {
       "id": "2594585",
@@ -1156,6 +1156,91 @@
       "note": "League football",
       "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/xwtxsx1473503739.png",
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/68w7fe1639408210.png",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "NS"
+    },
+    {
+      "id": "2506224",
+      "date": "2026-09-17",
+      "time": "20:00",
+      "kickoff": "2026-09-17T17:00:00Z",
+      "competition": "La Liga",
+      "home": "Real Betis",
+      "away": "Getafe",
+      "venue": "Estadio de La Cartuja",
+      "heat": 72,
+      "note": "League football",
+      "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/2oqulv1663245386.png",
+      "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/eyh2891655594452.png",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "NS"
+    },
+    {
+      "id": "2594817",
+      "date": "2026-09-17",
+      "time": "22:00",
+      "kickoff": "2026-09-17T19:00:00Z",
+      "competition": "Europa League",
+      "home": "Crystal Palace",
+      "away": "Lech Poznań",
+      "venue": "Selhurst Park",
+      "heat": 72,
+      "note": "European night",
+      "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/ia6i3m1656014992.png",
+      "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/8zfxyx1685597440.png",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "NS"
+    },
+    {
+      "id": "2594851",
+      "date": "2026-09-17",
+      "time": "22:00",
+      "kickoff": "2026-09-17T19:00:00Z",
+      "competition": "Europa League",
+      "home": "Celtic",
+      "away": "Ferencváros",
+      "venue": "Celtic Park",
+      "heat": 72,
+      "note": "European night",
+      "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/3uv1641758780002.png",
+      "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/wk17od1688115265.png",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "NS"
+    },
+    {
+      "id": "2594855",
+      "date": "2026-09-17",
+      "time": "22:00",
+      "kickoff": "2026-09-17T19:00:00Z",
+      "competition": "Europa League",
+      "home": "Lillestrøm",
+      "away": "Torreense",
+      "venue": "Åråsen Stadion",
+      "heat": 72,
+      "note": "European night",
+      "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/txpuvv1448823342.png",
+      "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/byn6c21659694982.png",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "NS"
+    },
+    {
+      "id": "2506221",
+      "date": "2026-09-17",
+      "time": "22:30",
+      "kickoff": "2026-09-17T19:30:00Z",
+      "competition": "La Liga",
+      "home": "Málaga",
+      "away": "Villarreal",
+      "venue": "Estadio La Rosaleda",
+      "heat": 72,
+      "note": "League football",
+      "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/upqyvr1473502952.png",
+      "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/vrypqy1473503073.png",
       "homeScore": null,
       "awayScore": null,
       "status": "NS"
