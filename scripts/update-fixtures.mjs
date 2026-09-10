@@ -9,6 +9,9 @@ const leagues = [
   { id: '4332', name: 'Serie A' },
   { id: '4335', name: 'La Liga' },
 ];
+const trackedTeams = [
+  { id: '133738', name: 'Real Madrid' },
+];
 
 const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 
@@ -46,6 +49,38 @@ function kickoffTimestamp(event) {
   return event.strTimestamp.endsWith('Z') ? event.strTimestamp : `${event.strTimestamp}Z`;
 }
 
+function competitionFor(event) {
+  const league = leagues.find((item) => item.id === event.idLeague);
+  if (league) return league.name;
+  const name = event.strLeague ?? '';
+  if (name.includes('Champions')) return 'Champions League';
+  if (name.includes('Europa')) return 'Europa League';
+  if (name.includes('Premier')) return 'Premier League';
+  if (name.includes('Serie A')) return 'Serie A';
+  if (name.includes('La Liga')) return 'La Liga';
+  return null;
+}
+
+function mapEvent(event, date, competition) {
+  return {
+    id: event.idEvent,
+    date,
+    time: sofiaTime(event),
+    kickoff: kickoffTimestamp(event),
+    competition,
+    home: event.strHomeTeam,
+    away: event.strAwayTeam,
+    venue: event.strVenue || 'Venue TBA',
+    heat: heatFor(event),
+    note: event.strLeague?.includes('Champions') || event.strLeague?.includes('Europa') ? 'European night' : 'League football',
+    homeBadge: event.strHomeTeamBadge || null,
+    awayBadge: event.strAwayTeamBadge || null,
+    homeScore: event.intHomeScore == null ? null : Number(event.intHomeScore),
+    awayScore: event.intAwayScore == null ? null : Number(event.intAwayScore),
+    status: event.strStatus || (event.intHomeScore != null ? 'Finished' : 'Scheduled'),
+  };
+}
+
 async function fetchLeague(date, league, attempt = 1) {
   const url = `https://www.thesportsdb.com/api/v1/json/123/eventsday.php?d=${date}&l=${league.id}`;
   const response = await fetch(url, { headers: { accept: 'application/json' } });
@@ -57,23 +92,25 @@ async function fetchLeague(date, league, attempt = 1) {
     throw new Error(`${league.name} returned ${response.status}`);
   }
   const data = await response.json();
-  return (data.events ?? []).map((event) => ({
-    id: event.idEvent,
-    date,
-    time: sofiaTime(event),
-    kickoff: kickoffTimestamp(event),
-    competition: league.name,
-    home: event.strHomeTeam,
-    away: event.strAwayTeam,
-    venue: event.strVenue || 'Venue TBA',
-    heat: heatFor(event),
-    note: event.strLeague?.includes('Champions') || event.strLeague?.includes('Europa') ? 'European night' : 'League football',
-    homeBadge: event.strHomeTeamBadge || null,
-    awayBadge: event.strAwayTeamBadge || null,
-    homeScore: event.intHomeScore == null ? null : Number(event.intHomeScore),
-    awayScore: event.intAwayScore == null ? null : Number(event.intAwayScore),
-    status: event.strStatus || (event.intHomeScore != null ? 'Finished' : 'Scheduled'),
-  }));
+  return (data.events ?? []).map((event) => mapEvent(event, date, league.name));
+}
+
+async function fetchTrackedTeam(team) {
+  const endpoints = ['eventslast.php', 'eventsnext.php'];
+  const events = [];
+  for (const endpoint of endpoints) {
+    const response = await fetch(`https://www.thesportsdb.com/api/v1/json/123/${endpoint}?id=${team.id}`, { headers: { accept: 'application/json' } });
+    if (response.ok) {
+      const data = await response.json();
+      events.push(...(data.results ?? data.events ?? []));
+    }
+    await delay(2_100);
+  }
+  return events.flatMap((event) => {
+    const competition = competitionFor(event);
+    const date = event.dateEvent;
+    return competition && date ? [mapEvent(event, date, competition)] : [];
+  });
 }
 
 async function fetchResult(fixture) {
@@ -114,6 +151,11 @@ for (const [index, date] of dates.entries()) {
 }
 
 if (!collected.length) throw new Error('No fixture data was returned; keeping the current archive.');
+
+for (const team of trackedTeams) {
+  const supplements = await fetchTrackedTeam(team);
+  collected.push(...supplements.filter((fixture) => dates.includes(fixture.date)));
+}
 
 const resultCutoff = dateKey(0);
 for (let index = 0; index < collected.length; index += 1) {
