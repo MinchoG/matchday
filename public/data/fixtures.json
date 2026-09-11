@@ -1,26 +1,9 @@
 {
-  "generatedAt": "2026-09-10T09:50:12.209Z",
+  "generatedAt": "2026-09-11T09:48:55.671Z",
   "timezone": "Europe/Sofia",
-  "from": "2026-09-03",
-  "to": "2026-09-17",
+  "from": "2026-09-04",
+  "to": "2026-09-18",
   "fixtures": [
-    {
-      "id": "2506226",
-      "date": "2026-09-03",
-      "time": "22:00",
-      "kickoff": "2026-09-03T19:00:00Z",
-      "competition": "La Liga",
-      "home": "Real Sociedad",
-      "away": "Celta Vigo",
-      "venue": "Reale Arena",
-      "heat": 72,
-      "note": "League football",
-      "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/vptvpr1473502986.png",
-      "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/xfjtku1690436219.png",
-      "homeScore": 0,
-      "awayScore": 0,
-      "status": "FT"
-    },
     {
       "id": "2482160",
       "date": "2026-09-04",
@@ -561,9 +544,9 @@
       "note": "European night",
       "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/xfsz6i1721297428.png",
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/sqrxsr1421791799.png",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "NS"
+      "homeScore": 1,
+      "awayScore": 1,
+      "status": "FT"
     },
     {
       "id": "2594538",
@@ -578,9 +561,9 @@
       "note": "European night",
       "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/xzqdr11517660252.png",
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/5cw7q91723051971.png",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "NS"
+      "homeScore": 4,
+      "awayScore": 0,
+      "status": "FT"
     },
     {
       "id": "2594568",
@@ -595,9 +578,9 @@
       "note": "European night",
       "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/01ogkh1716960412.png",
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/uqpwwx1449165943.png",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "NS"
+      "homeScore": 5,
+      "awayScore": 0,
+      "status": "FT"
     },
     {
       "id": "2482175",
@@ -1241,6 +1224,57 @@
       "note": "League football",
       "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/upqyvr1473502952.png",
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/vrypqy1473503073.png",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "NS"
+    },
+    {
+      "id": "2482187",
+      "date": "2026-09-18",
+      "time": "21:45",
+      "kickoff": "2026-09-18T18:45:00Z",
+      "competition": "Serie A",
+      "home": "Monza",
+      "away": "Sassuolo",
+      "venue": "U-Power Stadium",
+      "heat": 72,
+      "note": "League football",
+      "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/bxearg1603170113.png",
+      "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/xystvp1448806138.png",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "NS"
+    },
+    {
+      "id": "2494047",
+      "date": "2026-09-18",
+      "time": "22:00",
+      "kickoff": "2026-09-18T19:00:00Z",
+      "competition": "Premier League",
+      "home": "Brentford",
+      "away": "Chelsea",
+      "venue": "Brentford Community Stadium",
+      "heat": 81,
+      "note": "League football",
+      "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/grv1aw1546453779.png",
+      "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/pbf4ul1782638263.png",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "NS"
+    },
+    {
+      "id": "2506235",
+      "date": "2026-09-18",
+      "time": "22:00",
+      "kickoff": "2026-09-18T19:00:00Z",
+      "competition": "La Liga",
+      "home": "Espanyol",
+      "away": "Elche",
+      "venue": "RCDE Stadium",
+      "heat": 72,
+      "note": "League football",
+      "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/867nzz1681703222.png",
+      "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/e4vaw51655594332.png",
       "homeScore": null,
       "awayScore": null,
       "status": "NS"
