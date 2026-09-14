@@ -1,145 +1,9 @@
 {
-  "generatedAt": "2026-09-13T10:22:11.151Z",
+  "generatedAt": "2026-09-14T10:46:06.148Z",
   "timezone": "Europe/Sofia",
-  "from": "2026-09-06",
-  "to": "2026-09-20",
+  "from": "2026-09-07",
+  "to": "2026-09-21",
   "fixtures": [
-    {
-      "id": "2494023",
-      "date": "2026-09-06",
-      "time": "16:00",
-      "kickoff": "2026-09-06T13:00:00Z",
-      "competition": "Premier League",
-      "home": "Everton",
-      "away": "Manchester United",
-      "venue": "Hill Dickinson Stadium",
-      "heat": 81,
-      "note": "League football",
-      "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/eqayrf1523184794.png",
-      "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/xzqdr11517660252.png",
-      "homeScore": 2,
-      "awayScore": 2,
-      "status": "FT"
-    },
-    {
-      "id": "2482166",
-      "date": "2026-09-06",
-      "time": "16:00",
-      "kickoff": "2026-09-06T13:00:00Z",
-      "competition": "Serie A",
-      "home": "Frosinone",
-      "away": "Venezia",
-      "venue": "Stadio Benito Stirpe",
-      "heat": 72,
-      "note": "League football",
-      "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/a7xa151603170120.png",
-      "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/vbiget1781026964.png",
-      "homeScore": 3,
-      "awayScore": 2,
-      "status": "FT"
-    },
-    {
-      "id": "2506200",
-      "date": "2026-09-06",
-      "time": "17:15",
-      "kickoff": "2026-09-06T14:15:00Z",
-      "competition": "La Liga",
-      "home": "Valencia",
-      "away": "Barcelona",
-      "venue": "Estadio de Mestalla",
-      "heat": 81,
-      "note": "League football",
-      "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/dm8l6o1655594864.png",
-      "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/wq9sir1639406443.png",
-      "homeScore": 0,
-      "awayScore": 5,
-      "status": "FT"
-    },
-    {
-      "id": "2494022",
-      "date": "2026-09-06",
-      "time": "18:30",
-      "kickoff": "2026-09-06T15:30:00Z",
-      "competition": "Premier League",
-      "home": "Arsenal",
-      "away": "Chelsea",
-      "venue": "Emirates Stadium",
-      "heat": 90,
-      "note": "League football",
-      "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/uyhbfe1612467038.png",
-      "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/pbf4ul1782638263.png",
-      "homeScore": 2,
-      "awayScore": 1,
-      "status": "FT"
-    },
-    {
-      "id": "2482163",
-      "date": "2026-09-06",
-      "time": "19:00",
-      "kickoff": "2026-09-06T16:00:00Z",
-      "competition": "Serie A",
-      "home": "Bologna",
-      "away": "Sassuolo",
-      "venue": "Stadio Renato Dall'Ara",
-      "heat": 72,
-      "note": "League football",
-      "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/2qi1u31655592366.png",
-      "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/xystvp1448806138.png",
-      "homeScore": 2,
-      "awayScore": 2,
-      "status": "FT"
-    },
-    {
-      "id": "2506202",
-      "date": "2026-09-06",
-      "time": "19:30",
-      "kickoff": "2026-09-06T16:30:00Z",
-      "competition": "La Liga",
-      "home": "Málaga",
-      "away": "Levante",
-      "venue": "Estadio La Rosaleda",
-      "heat": 72,
-      "note": "League football",
-      "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/upqyvr1473502952.png",
-      "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/xwtxsx1473503739.png",
-      "homeScore": 0,
-      "awayScore": 0,
-      "status": "FT"
-    },
-    {
-      "id": "2482161",
-      "date": "2026-09-06",
-      "time": "21:45",
-      "kickoff": "2026-09-06T18:45:00Z",
-      "competition": "Serie A",
-      "home": "Juventus",
-      "away": "AC Milan",
-      "venue": "Allianz Stadium Turin",
-      "heat": 90,
-      "note": "League football",
-      "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/uxf0gr1742983727.png",
-      "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/wvspur1448806617.png",
-      "homeScore": 1,
-      "awayScore": 1,
-      "status": "FT"
-    },
-    {
-      "id": "2506203",
-      "date": "2026-09-06",
-      "time": "22:00",
-      "kickoff": "2026-09-06T19:00:00Z",
-      "competition": "La Liga",
-      "home": "Espanyol",
-      "away": "Sevilla",
-      "venue": "RCDE Stadium",
-      "heat": 72,
-      "note": "League football",
-      "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/867nzz1681703222.png",
-      "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/vpsqqx1473502977.png",
-      "homeScore": 1,
-      "awayScore": 1,
-      "status": "FT"
-    },
     {
       "id": "2482158",
       "date": "2026-09-07",
@@ -578,9 +442,9 @@
       "note": "League football",
       "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/xfjtku1690436219.png",
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/upqyvr1473502952.png",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "NS"
+      "homeScore": 1,
+      "awayScore": 1,
+      "status": "FT"
     },
     {
       "id": "2494039",
@@ -595,9 +459,9 @@
       "note": "League football",
       "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/uxyqys1424033798.png",
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/ywypts1448810904.png",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "NS"
+      "homeScore": 0,
+      "awayScore": 5,
+      "status": "FT"
     },
     {
       "id": "2482176",
@@ -612,9 +476,9 @@
       "note": "League football",
       "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/j4vznr1567365249.png",
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/bxearg1603170113.png",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "NS"
+      "homeScore": 3,
+      "awayScore": 2,
+      "status": "FT"
     },
     {
       "id": "2506213",
@@ -629,9 +493,9 @@
       "note": "League football",
       "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/xwtxsx1473503739.png",
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/wq9sir1639406443.png",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "NS"
+      "homeScore": 2,
+      "awayScore": 4,
+      "status": "FT"
     },
     {
       "id": "2494030",
@@ -646,9 +510,9 @@
       "note": "League football",
       "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/xzqdr11517660252.png",
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/vwpvry1467462651.png",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "NS"
+      "homeScore": 0,
+      "awayScore": 1,
+      "status": "FT"
     },
     {
       "id": "2482170",
@@ -663,9 +527,9 @@
       "note": "League football",
       "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/l8qyxv1742982541.png",
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/2qi1u31655592366.png",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "NS"
+      "homeScore": 1,
+      "awayScore": 0,
+      "status": "FT"
     },
     {
       "id": "2506215",
@@ -680,9 +544,9 @@
       "note": "League football",
       "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/eyh2891655594452.png",
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/62bvwv1783013156.png",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "NS"
+      "homeScore": 1,
+      "awayScore": 1,
+      "status": "FT"
     },
     {
       "id": "2482169",
@@ -697,9 +561,9 @@
       "note": "League football",
       "homeBadge": "https://r2.thesportsdb.com/images/media/team/badge/xystvp1448806138.png",
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/uxf0gr1742983727.png",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "NS"
+      "homeScore": 3,
+      "awayScore": 2,
+      "status": "FT"
     },
     {
       "id": "2482173",
