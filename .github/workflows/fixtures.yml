@@ -23,6 +23,8 @@ jobs:
           node-version: 22
       - name: Fetch the latest fixtures and scores
         run: node scripts/update-fixtures.mjs
+        env:
+          FREE_FOOTBALL_API_TOKEN: ${{ secrets.FREE_FOOTBALL_API_TOKEN }}
       - name: Save updated data
         run: |
           git config user.name "github-actions[bot]"

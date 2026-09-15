@@ -2,21 +2,23 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
 const OUTPUT = new URL('../public/data/fixtures.json', import.meta.url);
 const TIMEZONE = 'Europe/Sofia';
-const leagues = [
-  { id: '4480', name: 'Champions League' },
-  { id: '4481', name: 'Europa League' },
-  { id: '4328', name: 'Premier League' },
-  { id: '4332', name: 'Serie A' },
-  { id: '4335', name: 'La Liga' },
-];
-const trackedTeams = [
-  { id: '133738', name: 'Real Madrid' },
-];
+const FOOTBALL_DATA_TOKEN = process.env.FREE_FOOTBALL_API_TOKEN;
+const FOOTBALL_DATA_CODES = new Map([
+  ['CL', 'Champions League'],
+  ['PL', 'Premier League'],
+  ['SA', 'Serie A'],
+  ['PD', 'La Liga'],
+]);
+const EUROPA_LEAGUE = { id: '4481', name: 'Europa League' };
 
 const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 
 function dateKey(offset) {
   const date = new Date(Date.now() + offset * 86_400_000);
+  return dateInZone(date);
+}
+
+function dateInZone(date) {
   const parts = new Intl.DateTimeFormat('en-CA', {
     timeZone: TIMEZONE,
     year: 'numeric',
@@ -27,15 +29,8 @@ function dateKey(offset) {
   return `${part('year')}-${part('month')}-${part('day')}`;
 }
 
-function heatFor(event) {
-  const names = `${event.strHomeTeam} ${event.strAwayTeam}`.toLowerCase();
-  const heavyweight = ['real madrid', 'barcelona', 'liverpool', 'arsenal', 'manchester', 'chelsea', 'inter', 'milan', 'juventus', 'napoli', 'bayern', 'paris', 'tottenham', 'atletico'];
-  return Math.min(98, 72 + heavyweight.filter((club) => names.includes(club)).length * 9 + (event.strLeague?.includes('Champions') ? 8 : 0));
-}
-
-function sofiaTime(event) {
-  if (!event.strTimestamp) return (event.strTime ?? '').slice(0, 5) || 'TBA';
-  const timestamp = event.strTimestamp.endsWith('Z') ? event.strTimestamp : `${event.strTimestamp}Z`;
+function timeInSofia(timestamp) {
+  if (!timestamp) return 'TBA';
   return new Intl.DateTimeFormat('en-GB', {
     timeZone: TIMEZONE,
     hour: '2-digit',
@@ -44,138 +39,135 @@ function sofiaTime(event) {
   }).format(new Date(timestamp));
 }
 
-function kickoffTimestamp(event) {
-  if (!event.strTimestamp) return null;
-  return event.strTimestamp.endsWith('Z') ? event.strTimestamp : `${event.strTimestamp}Z`;
+function heatFor(home, away, competition) {
+  const names = `${home} ${away}`.toLowerCase();
+  const heavyweight = ['real madrid', 'barcelona', 'liverpool', 'arsenal', 'manchester', 'chelsea', 'inter', 'milan', 'juventus', 'napoli', 'bayern', 'paris', 'tottenham', 'atletico'];
+  return Math.min(98, 72 + heavyweight.filter((club) => names.includes(club)).length * 9 + (competition === 'Champions League' ? 8 : 0));
 }
 
-function competitionFor(event) {
-  const league = leagues.find((item) => item.id === event.idLeague);
-  if (league) return league.name;
-  const name = event.strLeague ?? '';
-  if (name.includes('Champions')) return 'Champions League';
-  if (name.includes('Europa')) return 'Europa League';
-  if (name.includes('Premier')) return 'Premier League';
-  if (name.includes('Serie A')) return 'Serie A';
-  if (name.includes('La Liga')) return 'La Liga';
-  return null;
+function shortStatus(status, hasScore) {
+  const statuses = {
+    FINISHED: 'FT',
+    IN_PLAY: 'LIVE',
+    PAUSED: 'HT',
+    POSTPONED: 'Postponed',
+    SUSPENDED: 'Suspended',
+    CANCELLED: 'Cancelled',
+  };
+  return statuses[status] || (hasScore ? 'FT' : 'NS');
 }
 
-function mapEvent(event, date, competition) {
+function mapFootballDataMatch(match) {
+  const competition = FOOTBALL_DATA_CODES.get(match.competition?.code);
+  if (!competition || !match.utcDate) return null;
+  const homeScore = match.score?.fullTime?.home ?? null;
+  const awayScore = match.score?.fullTime?.away ?? null;
+  const hasScore = homeScore != null && awayScore != null;
   return {
-    id: event.idEvent,
-    date,
-    time: sofiaTime(event),
-    kickoff: kickoffTimestamp(event),
+    id: `fd-${match.id}`,
+    date: dateInZone(new Date(match.utcDate)),
+    time: timeInSofia(match.utcDate),
+    kickoff: match.utcDate,
     competition,
+    home: match.homeTeam?.name || match.homeTeam?.shortName,
+    away: match.awayTeam?.name || match.awayTeam?.shortName,
+    venue: match.venue || 'Venue TBA',
+    heat: heatFor(match.homeTeam?.name, match.awayTeam?.name, competition),
+    note: competition === 'Champions League' ? 'European night' : 'League football',
+    homeBadge: match.homeTeam?.crest || null,
+    awayBadge: match.awayTeam?.crest || null,
+    homeScore,
+    awayScore,
+    status: shortStatus(match.status, hasScore),
+  };
+}
+
+async function fetchFootballData(from, to) {
+  if (!FOOTBALL_DATA_TOKEN) throw new Error('FREE_FOOTBALL_API_TOKEN is required');
+  const url = `https://api.football-data.org/v4/matches?competitions=PL,PD,SA,CL&dateFrom=${from}&dateTo=${to}`;
+  const response = await fetch(url, { headers: { 'X-Auth-Token': FOOTBALL_DATA_TOKEN, accept: 'application/json' } });
+  if (!response.ok) throw new Error(`football-data.org returned ${response.status}`);
+  const data = await response.json();
+  return (data.matches ?? []).map(mapFootballDataMatch).filter(Boolean);
+}
+
+function mapSportsDbEvent(event, date) {
+  const kickoff = event.strTimestamp ? (event.strTimestamp.endsWith('Z') ? event.strTimestamp : `${event.strTimestamp}Z`) : null;
+  const homeScore = event.intHomeScore == null ? null : Number(event.intHomeScore);
+  const awayScore = event.intAwayScore == null ? null : Number(event.intAwayScore);
+  return {
+    id: `tsdb-${event.idEvent}`,
+    date,
+    time: kickoff ? timeInSofia(kickoff) : (event.strTime ?? '').slice(0, 5) || 'TBA',
+    kickoff,
+    competition: EUROPA_LEAGUE.name,
     home: event.strHomeTeam,
     away: event.strAwayTeam,
     venue: event.strVenue || 'Venue TBA',
-    heat: heatFor(event),
-    note: event.strLeague?.includes('Champions') || event.strLeague?.includes('Europa') ? 'European night' : 'League football',
+    heat: heatFor(event.strHomeTeam, event.strAwayTeam, EUROPA_LEAGUE.name),
+    note: 'European night',
     homeBadge: event.strHomeTeamBadge || null,
     awayBadge: event.strAwayTeamBadge || null,
-    homeScore: event.intHomeScore == null ? null : Number(event.intHomeScore),
-    awayScore: event.intAwayScore == null ? null : Number(event.intAwayScore),
-    status: event.strStatus || (event.intHomeScore != null ? 'Finished' : 'Scheduled'),
+    homeScore,
+    awayScore,
+    status: event.strStatus || (homeScore != null && awayScore != null ? 'FT' : 'NS'),
   };
 }
 
-async function fetchLeague(date, league, attempt = 1) {
-  const url = `https://www.thesportsdb.com/api/v1/json/123/eventsday.php?d=${date}&l=${league.id}`;
+async function fetchEuropa(date) {
+  const url = `https://www.thesportsdb.com/api/v1/json/123/eventsday.php?d=${date}&l=${EUROPA_LEAGUE.id}`;
   const response = await fetch(url, { headers: { accept: 'application/json' } });
-  if (!response.ok) {
-    if (attempt < 3) {
-      await delay(attempt * 5_000);
-      return fetchLeague(date, league, attempt + 1);
-    }
-    throw new Error(`${league.name} returned ${response.status}`);
-  }
+  if (!response.ok) throw new Error(`TheSportsDB returned ${response.status}`);
   const data = await response.json();
-  return (data.events ?? []).map((event) => mapEvent(event, date, league.name));
+  return (data.events ?? []).map((event) => mapSportsDbEvent(event, date));
 }
 
-async function fetchTrackedTeam(team) {
-  const endpoints = ['eventslast.php', 'eventsnext.php'];
-  const events = [];
-  for (const endpoint of endpoints) {
-    const response = await fetch(`https://www.thesportsdb.com/api/v1/json/123/${endpoint}?id=${team.id}`, { headers: { accept: 'application/json' } });
-    if (response.ok) {
-      const data = await response.json();
-      events.push(...(data.results ?? data.events ?? []));
-    }
-    await delay(2_100);
-  }
-  return events.flatMap((event) => {
-    const competition = competitionFor(event);
-    const date = event.dateEvent;
-    return competition && date ? [mapEvent(event, date, competition)] : [];
-  });
-}
-
-async function fetchResult(fixture) {
-  const response = await fetch(`https://www.thesportsdb.com/api/v1/json/123/lookupevent.php?id=${fixture.id}`, { headers: { accept: 'application/json' } });
-  if (!response.ok) return fixture;
-  const event = (await response.json()).events?.[0];
-  if (!event || event.intHomeScore == null || event.intAwayScore == null) return fixture;
-  return {
-    ...fixture,
-    homeScore: Number(event.intHomeScore),
-    awayScore: Number(event.intAwayScore),
-    status: event.strStatus || 'FT',
-    kickoff: kickoffTimestamp(event) || fixture.kickoff,
-  };
-}
-
-async function existingFixtures() {
+async function existingEuropa(dates) {
   try {
     const stored = JSON.parse(await readFile(OUTPUT, 'utf8'));
-    return Array.isArray(stored.fixtures) ? stored.fixtures : [];
+    return (stored.fixtures ?? []).filter((fixture) => fixture.competition === EUROPA_LEAGUE.name && dates.has(fixture.date));
   } catch {
     return [];
   }
 }
 
-const dates = Array.from({ length: 15 }, (_, index) => dateKey(index - 7));
-const previous = await existingFixtures();
-const collected = [];
+const dateList = Array.from({ length: 15 }, (_, index) => dateKey(index - 7));
+const dates = new Set(dateList);
+const primary = [];
+const windows = [[dateList[0], dateList[7]], [dateList[8], dateList[14]]];
 
-for (const [index, date] of dates.entries()) {
-  const results = await Promise.allSettled(leagues.map((league) => fetchLeague(date, league)));
-  results.forEach((result, leagueIndex) => {
-    if (result.status === 'fulfilled') collected.push(...result.value);
-    else console.warn(`${date}: ${leagues[leagueIndex].name} failed: ${result.reason.message}`);
-  });
-  console.log(`${date}: ${collected.filter((fixture) => fixture.date === date).length} fixtures`);
-  if (index < dates.length - 1) await delay(10_500);
+for (const [index, [from, to]] of windows.entries()) {
+  primary.push(...await fetchFootballData(from, to));
+  console.log(`football-data.org ${from} through ${to}: ${primary.length} matches collected`);
+  if (index === 0) await delay(6_100);
 }
 
-if (!collected.length) throw new Error('No fixture data was returned; keeping the current archive.');
-
-for (const team of trackedTeams) {
-  const supplements = await fetchTrackedTeam(team);
-  collected.push(...supplements.filter((fixture) => dates.includes(fixture.date)));
-}
-
-const resultCutoff = dateKey(0);
-for (let index = 0; index < collected.length; index += 1) {
-  const fixture = collected[index];
-  if (fixture.date < resultCutoff && (fixture.homeScore == null || fixture.awayScore == null)) {
-    collected[index] = await fetchResult(fixture);
-    await delay(2_100);
+const europa = [];
+let europaFailures = 0;
+for (const [index, date] of dateList.entries()) {
+  try {
+    europa.push(...await fetchEuropa(date));
+  } catch (error) {
+    europaFailures += 1;
+    console.warn(`Europa League ${date}: ${error.message}`);
   }
+  if (index < dateList.length - 1) await delay(2_100);
 }
 
-const inRange = new Set(dates);
-const merged = new Map(previous.filter((fixture) => inRange.has(fixture.date)).map((fixture) => [`${fixture.id}:${fixture.date}`, fixture]));
-for (const fixture of collected) {
-  const key = `${fixture.id}:${fixture.date}`;
-  const stored = merged.get(key);
-  const keepStoredResult = fixture.homeScore == null && fixture.awayScore == null && stored?.homeScore != null && stored?.awayScore != null;
-  merged.set(key, keepStoredResult ? { ...fixture, homeScore: stored.homeScore, awayScore: stored.awayScore, status: stored.status } : fixture);
-}
-const fixtures = [...merged.values()].sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
+if (europaFailures === dateList.length) europa.push(...await existingEuropa(dates));
+const unique = new Map([...primary, ...europa]
+  .filter((fixture) => dates.has(fixture.date) && fixture.home && fixture.away)
+  .map((fixture) => [`${fixture.competition}:${fixture.date}:${fixture.home}:${fixture.away}`, fixture]));
+const fixtures = [...unique.values()].sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
 
+if (!primary.length) throw new Error('No primary fixture data was returned; keeping the current archive.');
 await mkdir(new URL('../public/data/', import.meta.url), { recursive: true });
-await writeFile(OUTPUT, `${JSON.stringify({ generatedAt: new Date().toISOString(), timezone: TIMEZONE, from: dates[0], to: dates.at(-1), fixtures }, null, 2)}\n`);
-console.log(`Saved ${fixtures.length} fixtures from ${dates[0]} through ${dates.at(-1)}.`);
+await writeFile(OUTPUT, `${JSON.stringify({
+  generatedAt: new Date().toISOString(),
+  timezone: TIMEZONE,
+  from: dateList[0],
+  to: dateList.at(-1),
+  sources: ['football-data.org', 'TheSportsDB (Europa League fallback)'],
+  fixtures,
+}, null, 2)}\n`);
+console.log(`Saved ${fixtures.length} fixtures from ${dateList[0]} through ${dateList.at(-1)}.`);

@@ -9,8 +9,9 @@ the next seven days for:
 - Serie A
 - La Liga
 
-Kickoff times are presented in `Europe/Sofia`. Scores and fixtures come from the
-free TheSportsDB API and are committed as a static archive. The scheduled GitHub
+Kickoff times are presented in `Europe/Sofia`. Scores and fixtures primarily come
+from football-data.org, with TheSportsDB retained as a Europa League fallback, and
+are committed as a static archive. The scheduled GitHub
 Action refreshes the archive every day at 05:15 UTC; it can also be run manually
 from the Actions tab.
 
