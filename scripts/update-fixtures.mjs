@@ -9,7 +9,13 @@ const FOOTBALL_DATA_CODES = new Map([
   ['SA', 'Serie A'],
   ['PD', 'La Liga'],
 ]);
-const EUROPA_LEAGUE = { id: '4481', name: 'Europa League' };
+const SPORTS_DB_LEAGUES = [
+  { id: '4480', name: 'Champions League' },
+  { id: '4481', name: 'Europa League' },
+  { id: '4328', name: 'Premier League' },
+  { id: '4332', name: 'Serie A' },
+  { id: '4335', name: 'La Liga' },
+];
 
 const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 
@@ -91,7 +97,7 @@ async function fetchFootballData(from, to) {
   return (data.matches ?? []).map(mapFootballDataMatch).filter(Boolean);
 }
 
-function mapSportsDbEvent(event, date) {
+function mapSportsDbEvent(event, date, competition) {
   const kickoff = event.strTimestamp ? (event.strTimestamp.endsWith('Z') ? event.strTimestamp : `${event.strTimestamp}Z`) : null;
   const homeScore = event.intHomeScore == null ? null : Number(event.intHomeScore);
   const awayScore = event.intAwayScore == null ? null : Number(event.intAwayScore);
@@ -100,12 +106,12 @@ function mapSportsDbEvent(event, date) {
     date,
     time: kickoff ? timeInSofia(kickoff) : (event.strTime ?? '').slice(0, 5) || 'TBA',
     kickoff,
-    competition: EUROPA_LEAGUE.name,
+    competition,
     home: event.strHomeTeam,
     away: event.strAwayTeam,
     venue: event.strVenue || 'Venue TBA',
-    heat: heatFor(event.strHomeTeam, event.strAwayTeam, EUROPA_LEAGUE.name),
-    note: 'European night',
+    heat: heatFor(event.strHomeTeam, event.strAwayTeam, competition),
+    note: competition === 'Champions League' || competition === 'Europa League' ? 'European night' : 'League football',
     homeBadge: event.strHomeTeamBadge || null,
     awayBadge: event.strAwayTeamBadge || null,
     homeScore,
@@ -114,21 +120,36 @@ function mapSportsDbEvent(event, date) {
   };
 }
 
-async function fetchEuropa(date) {
-  const url = `https://www.thesportsdb.com/api/v1/json/123/eventsday.php?d=${date}&l=${EUROPA_LEAGUE.id}`;
+async function fetchSportsDb(date, league) {
+  const url = `https://www.thesportsdb.com/api/v1/json/123/eventsday.php?d=${date}&l=${league.id}`;
   const response = await fetch(url, { headers: { accept: 'application/json' } });
   if (!response.ok) throw new Error(`TheSportsDB returned ${response.status}`);
   const data = await response.json();
-  return (data.events ?? []).map((event) => mapSportsDbEvent(event, date));
+  return (data.events ?? []).map((event) => mapSportsDbEvent(event, date, league.name));
 }
 
-async function existingEuropa(dates) {
+async function existingFallback(dates) {
   try {
     const stored = JSON.parse(await readFile(OUTPUT, 'utf8'));
-    return (stored.fixtures ?? []).filter((fixture) => fixture.competition === EUROPA_LEAGUE.name && dates.has(fixture.date));
+    return (stored.fixtures ?? []).filter((fixture) => dates.has(fixture.date));
   } catch {
     return [];
   }
+}
+
+function bucketKey(fixture) {
+  return `${fixture.competition}:${fixture.date}`;
+}
+
+function preferMoreComplete(primary, fallback) {
+  const primaryBuckets = Map.groupBy(primary, bucketKey);
+  const fallbackBuckets = Map.groupBy(fallback, bucketKey);
+  const keys = new Set([...primaryBuckets.keys(), ...fallbackBuckets.keys()]);
+  return [...keys].flatMap((key) => {
+    const preferred = primaryBuckets.get(key) ?? [];
+    const alternative = fallbackBuckets.get(key) ?? [];
+    return alternative.length > preferred.length ? alternative : preferred;
+  });
 }
 
 const dateList = Array.from({ length: 15 }, (_, index) => dateKey(index - 7));
@@ -142,20 +163,25 @@ for (const [index, [from, to]] of windows.entries()) {
   if (index === 0) await delay(6_100);
 }
 
-const europa = [];
-let europaFailures = 0;
-for (const [index, date] of dateList.entries()) {
-  try {
-    europa.push(...await fetchEuropa(date));
-  } catch (error) {
-    europaFailures += 1;
-    console.warn(`Europa League ${date}: ${error.message}`);
+const fallback = [];
+let fallbackFailures = 0;
+let fallbackRequests = 0;
+for (const date of dateList) {
+  for (const league of SPORTS_DB_LEAGUES) {
+    try {
+      fallback.push(...await fetchSportsDb(date, league));
+    } catch (error) {
+      fallbackFailures += 1;
+      console.warn(`${league.name} ${date}: ${error.message}`);
+    }
+    fallbackRequests += 1;
+    if (fallbackRequests < dateList.length * SPORTS_DB_LEAGUES.length) await delay(2_100);
   }
-  if (index < dateList.length - 1) await delay(2_100);
 }
 
-if (europaFailures === dateList.length) europa.push(...await existingEuropa(dates));
-const unique = new Map([...primary, ...europa]
+if (fallbackFailures === dateList.length * SPORTS_DB_LEAGUES.length) fallback.push(...await existingFallback(dates));
+const selected = preferMoreComplete(primary, fallback);
+const unique = new Map(selected
   .filter((fixture) => dates.has(fixture.date) && fixture.home && fixture.away)
   .map((fixture) => [`${fixture.competition}:${fixture.date}:${fixture.home}:${fixture.away}`, fixture]));
 const fixtures = [...unique.values()].sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
@@ -167,7 +193,7 @@ await writeFile(OUTPUT, `${JSON.stringify({
   timezone: TIMEZONE,
   from: dateList[0],
   to: dateList.at(-1),
-  sources: ['football-data.org', 'TheSportsDB (Europa League fallback)'],
+  sources: ['football-data.org', 'TheSportsDB completeness fallback'],
   fixtures,
 }, null, 2)}\n`);
 console.log(`Saved ${fixtures.length} fixtures from ${dateList[0]} through ${dateList.at(-1)}.`);
