@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { CalendarDays, ChevronRight, Clock3, Flame, RefreshCw } from 'lucide-react';
+import { CalendarDays, ChevronRight, Clock3, Flame } from 'lucide-react';
 
 type Competition = 'All' | 'Champions League' | 'Europa League' | 'Premier League' | 'Serie A' | 'La Liga';
 type View = 'played' | 'today' | 'coming';
@@ -85,7 +85,7 @@ export default function App() {
       <section className="page-shell">
         <div className="intro-row"><div><p className="eyebrow">YOUR FOOTBALL GAMEWEEK</p><h1>What’s worth<br />watching?</h1></div><p className="intro-copy">Last week’s scores, today’s action and the next seven days across Europe. All kickoffs are Sofia time.</p></div>
 
-        <div className="controls"><nav className="view-tabs" aria-label="Match period">{views.map((item) => <button key={item.id} onClick={() => setView(item.id)} className={view === item.id ? 'active' : ''}><span>{item.label}</span><small>{buckets[item.id].length}</small></button>)}</nav><button className="refresh" onClick={() => void loadFixtures()}><RefreshCw size={17} className={loading ? 'spin' : ''} /> {loading ? 'Checking' : 'Refresh'}</button></div>
+        <div className="controls"><nav className="view-tabs" aria-label="Match period">{views.map((item) => <button key={item.id} onClick={() => setView(item.id)} className={view === item.id ? 'active' : ''}><span>{item.label}</span><small>{buckets[item.id].length}</small></button>)}</nav></div>
         <nav className="competition-tabs" aria-label="Competitions">{competitions.map((item) => <button key={item} onClick={() => setCompetition(item)} className={competition === item ? 'active' : ''}>{item}</button>)}</nav>
 
         {topPick && <article className="spotlight"><div className="spotlight-label"><Flame size={15} fill="currentColor" /> TOP PICK · {topPick.heat}% MATCH HEAT</div><div className="spotlight-main"><div className={`team ${resultClass(topPick, 'home')}`}><span className="crest cream">{topPick.home.slice(0, 3).toUpperCase()}</span><strong>{topPick.home}</strong></div><div className="kickoff"><small>{dateLabel(topPick.date, today)} · {topPick.competition}</small><b>{hasScore(topPick) ? `${topPick.homeScore}–${topPick.awayScore}` : kickoffTime(topPick, timeMode)}</b><span>{hasScore(topPick) ? topPick.status : <><Clock3 size={13} /> {timeMode === 'sofia' ? 'Sofia time' : 'Your local time'}</>}</span></div><div className={`team ${resultClass(topPick, 'away')}`}><span className="crest red">{topPick.away.slice(0, 3).toUpperCase()}</span><strong>{topPick.away}</strong></div></div><footer><span>{topPick.note}</span><span>{topPick.venue} <ChevronRight size={15} /></span></footer></article>}

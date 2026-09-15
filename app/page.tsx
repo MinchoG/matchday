@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { CalendarDays, ChevronRight, Clock3, Flame, RefreshCw } from 'lucide-react';
+import { CalendarDays, ChevronRight, Clock3, Flame } from 'lucide-react';
 
 type Day = 'today' | 'tomorrow';
 type Competition = 'All' | 'Champions League' | 'Europa League' | 'Premier League' | 'Serie A' | 'La Liga';
@@ -32,18 +32,15 @@ function formatDate(offset: number) {
 export default function Home() {
   const [day, setDay] = useState<Day>('today');
   const [competition, setCompetition] = useState<Competition>('All');
-  const [refreshed, setRefreshed] = useState(false);
   const [fixtures, setFixtures] = useState<Fixture[]>(previewFixtures.map((fixture) => ({ ...fixture })));
   const [feed, setFeed] = useState<'loading' | 'live' | 'preview'>('loading');
   const loadFixtures = useCallback(async () => {
-    setRefreshed(true);
     try {
       const responses = await Promise.all([0, 1].map((offset) => fetch(`/api/fixtures?date=${dateKey(offset)}`).then((result) => result.ok ? result.json() : Promise.reject())));
       const live = responses.flatMap((payload, offset) => payload.fixtures.map((fixture: Omit<Fixture, 'day' | 'homeCode' | 'awayCode'>) => ({ ...fixture, day: offset === 0 ? 'today' : 'tomorrow', homeCode: fixture.home.slice(0, 3).toUpperCase(), awayCode: fixture.away.slice(0, 3).toUpperCase() })));
       setFixtures(live);
       setFeed('live');
     } catch { setFeed('preview'); }
-    finally { window.setTimeout(() => setRefreshed(false), 600); }
   }, []);
   useEffect(() => { void loadFixtures(); }, [loadFixtures]);
   const visible = useMemo(() => fixtures.filter((match) => match.day === day && (competition === 'All' || match.competition === competition)), [fixtures, day, competition]);
@@ -66,7 +63,6 @@ export default function Home() {
               <button key={item} onClick={() => setDay(item)} className={day === item ? 'active' : ''}><span>{item}</span><small>{formatDate(index)}</small></button>
             ))}
           </div>
-          <button className="refresh" onClick={() => void loadFixtures()} aria-label="Refresh fixtures"><RefreshCw size={17} className={refreshed ? 'spin' : ''} /> {refreshed ? 'Checking' : 'Refresh'}</button>
         </div>
         <nav className="competition-tabs" aria-label="Competitions">
           {competitions.map((item) => <button key={item} onClick={() => setCompetition(item)} className={competition === item ? 'active' : ''}>{item}</button>)}
