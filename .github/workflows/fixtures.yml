@@ -2,7 +2,8 @@ name: Update matchday fixtures
 
 on:
   schedule:
-    - cron: '15 5 * * *'
+    # Morning reconciliation plus a late-night pass after European matches finish.
+    - cron: '15 5,23 * * *'
   workflow_dispatch:
 
 permissions:
@@ -17,8 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
       - name: Fetch the latest fixtures and scores
