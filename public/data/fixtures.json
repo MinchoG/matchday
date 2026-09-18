@@ -1,11 +1,12 @@
 {
-  "generatedAt": "2026-09-18T07:44:01.914Z",
+  "generatedAt": "2026-09-18T08:02:21.101Z",
   "timezone": "Europe/Sofia",
   "from": "2026-09-11",
   "to": "2026-09-25",
   "sources": [
     "football-data.org",
-    "TheSportsDB completeness fallback"
+    "TheSportsDB completeness fallback",
+    "MAX Sport and DIEMA official TV schedules"
   ],
   "fixtures": [
     {
@@ -23,7 +24,8 @@
       "awayBadge": "https://crests.football-data.org/99.png",
       "homeScore": 2,
       "awayScore": 4,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-564669",
@@ -40,7 +42,8 @@
       "awayBadge": "https://crests.football-data.org/95.png",
       "homeScore": 1,
       "awayScore": 0,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-564670",
@@ -57,7 +60,8 @@
       "awayBadge": "https://crests.football-data.org/263.png",
       "homeScore": 2,
       "awayScore": 1,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-558604",
@@ -74,41 +78,8 @@
       "awayBadge": "https://crests.football-data.org/470.png",
       "homeScore": 1,
       "awayScore": 1,
-      "status": "FT"
-    },
-    {
-      "id": "fd-560576",
-      "date": "2026-09-12",
-      "time": "17:00",
-      "kickoff": "2026-09-12T14:00:00Z",
-      "competition": "Premier League",
-      "home": "AFC Bournemouth",
-      "away": "Brentford FC",
-      "venue": "Venue TBA",
-      "heat": 72,
-      "note": "League football",
-      "homeBadge": "https://crests.football-data.org/bournemouth.png",
-      "awayBadge": "https://crests.football-data.org/402.png",
-      "homeScore": 2,
-      "awayScore": 2,
-      "status": "FT"
-    },
-    {
-      "id": "fd-560572",
-      "date": "2026-09-12",
-      "time": "17:00",
-      "kickoff": "2026-09-12T14:00:00Z",
-      "competition": "Premier League",
-      "home": "Crystal Palace FC",
-      "away": "Ipswich Town FC",
-      "venue": "Venue TBA",
-      "heat": 72,
-      "note": "League football",
-      "homeBadge": "https://crests.football-data.org/354.png",
-      "awayBadge": "https://crests.football-data.org/349.png",
-      "homeScore": 2,
-      "awayScore": 3,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-560574",
@@ -125,24 +96,44 @@
       "awayBadge": "https://crests.football-data.org/351.png",
       "homeScore": 1,
       "awayScore": 2,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
-      "id": "fd-560581",
+      "id": "fd-560576",
       "date": "2026-09-12",
       "time": "17:00",
       "kickoff": "2026-09-12T14:00:00Z",
       "competition": "Premier League",
-      "home": "Chelsea FC",
-      "away": "Hull City AFC",
+      "home": "AFC Bournemouth",
+      "away": "Brentford FC",
       "venue": "Venue TBA",
-      "heat": 81,
+      "heat": 72,
       "note": "League football",
-      "homeBadge": "https://crests.football-data.org/61.png",
-      "awayBadge": "https://crests.football-data.org/322.png",
+      "homeBadge": "https://crests.football-data.org/bournemouth.png",
+      "awayBadge": "https://crests.football-data.org/402.png",
       "homeScore": 2,
       "awayScore": 2,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
+    },
+    {
+      "id": "fd-560572",
+      "date": "2026-09-12",
+      "time": "17:00",
+      "kickoff": "2026-09-12T14:00:00Z",
+      "competition": "Premier League",
+      "home": "Crystal Palace FC",
+      "away": "Ipswich Town FC",
+      "venue": "Venue TBA",
+      "heat": 72,
+      "note": "League football",
+      "homeBadge": "https://crests.football-data.org/354.png",
+      "awayBadge": "https://crests.football-data.org/349.png",
+      "homeScore": 2,
+      "awayScore": 3,
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-560573",
@@ -159,7 +150,26 @@
       "awayBadge": "https://crests.football-data.org/63.png",
       "homeScore": 0,
       "awayScore": 0,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
+    },
+    {
+      "id": "fd-560581",
+      "date": "2026-09-12",
+      "time": "17:00",
+      "kickoff": "2026-09-12T14:00:00Z",
+      "competition": "Premier League",
+      "home": "Chelsea FC",
+      "away": "Hull City AFC",
+      "venue": "Venue TBA",
+      "heat": 81,
+      "note": "League football",
+      "homeBadge": "https://crests.football-data.org/61.png",
+      "awayBadge": "https://crests.football-data.org/322.png",
+      "homeScore": 2,
+      "awayScore": 2,
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-564673",
@@ -176,7 +186,8 @@
       "awayBadge": "https://crests.football-data.org/80.png",
       "homeScore": 0,
       "awayScore": 2,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-558600",
@@ -193,7 +204,8 @@
       "awayBadge": "https://crests.football-data.org/98.png",
       "homeScore": 2,
       "awayScore": 2,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-564676",
@@ -210,7 +222,8 @@
       "awayBadge": "https://crests.football-data.org/285.png",
       "homeScore": 1,
       "awayScore": 1,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-560575",
@@ -227,7 +240,8 @@
       "awayBadge": "https://crests.football-data.org/62.png",
       "homeScore": 0,
       "awayScore": 0,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-558607",
@@ -244,7 +258,8 @@
       "awayBadge": "https://crests.football-data.org/104.png",
       "homeScore": 1,
       "awayScore": 2,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-564677",
@@ -261,7 +276,8 @@
       "awayBadge": "https://crests.football-data.org/87.png",
       "homeScore": 4,
       "awayScore": 1,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-560577",
@@ -278,7 +294,8 @@
       "awayBadge": "https://crests.football-data.org/57.png",
       "homeScore": 0,
       "awayScore": 2,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-564672",
@@ -295,7 +312,8 @@
       "awayBadge": "https://crests.football-data.org/84.png",
       "homeScore": 1,
       "awayScore": 1,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-560578",
@@ -312,7 +330,8 @@
       "awayBadge": "https://crests.football-data.org/397.png",
       "homeScore": 0,
       "awayScore": 5,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-558605",
@@ -329,7 +348,8 @@
       "awayBadge": "https://crests.football-data.org/5911.png",
       "homeScore": 3,
       "awayScore": 2,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-564675",
@@ -346,7 +366,8 @@
       "awayBadge": "https://crests.football-data.org/81.png",
       "homeScore": 2,
       "awayScore": 4,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-560580",
@@ -363,7 +384,8 @@
       "awayBadge": "https://crests.football-data.org/65.png",
       "homeScore": 0,
       "awayScore": 1,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-558599",
@@ -380,7 +402,8 @@
       "awayBadge": "https://crests.football-data.org/103.png",
       "homeScore": 1,
       "awayScore": 0,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-564668",
@@ -397,7 +420,8 @@
       "awayBadge": "https://crests.football-data.org/560.png",
       "homeScore": 1,
       "awayScore": 1,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-558608",
@@ -414,7 +438,8 @@
       "awayBadge": "https://crests.football-data.org/109.png",
       "homeScore": 3,
       "awayScore": 2,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-564674",
@@ -431,7 +456,8 @@
       "awayBadge": "https://crests.football-data.org/78.png",
       "homeScore": 0,
       "awayScore": 3,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-558603",
@@ -448,7 +474,8 @@
       "awayBadge": "https://crests.football-data.org/100.png",
       "homeScore": 0,
       "awayScore": 2,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-558602",
@@ -465,7 +492,8 @@
       "awayBadge": "https://crests.football-data.org/112.png",
       "homeScore": 2,
       "awayScore": 1,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-558601",
@@ -482,7 +510,8 @@
       "awayBadge": "https://crests.football-data.org/115.png",
       "homeScore": 5,
       "awayScore": 3,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-564671",
@@ -499,7 +528,8 @@
       "awayBadge": "https://crests.football-data.org/90.png",
       "homeScore": 1,
       "awayScore": 2,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-560579",
@@ -516,7 +546,8 @@
       "awayBadge": "https://crests.football-data.org/67.png",
       "homeScore": 4,
       "awayScore": 1,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-564678",
@@ -533,7 +564,8 @@
       "awayBadge": "https://crests.football-data.org/80.png",
       "homeScore": 2,
       "awayScore": 1,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-564680",
@@ -550,7 +582,8 @@
       "awayBadge": "https://crests.football-data.org/95.png",
       "homeScore": 0,
       "awayScore": 1,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-564681",
@@ -567,7 +600,8 @@
       "awayBadge": "https://crests.football-data.org/86.png",
       "homeScore": 2,
       "awayScore": 3,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-564685",
@@ -584,24 +618,8 @@
       "awayBadge": "https://crests.football-data.org/77.png",
       "homeScore": 0,
       "awayScore": 0,
-      "status": "Postponed"
-    },
-    {
-      "id": "fd-564684",
-      "date": "2026-09-16",
-      "time": "20:00",
-      "kickoff": "2026-09-16T17:00:00Z",
-      "competition": "La Liga",
-      "home": "Club Atlético de Madrid",
-      "away": "CA Osasuna",
-      "venue": "Venue TBA",
-      "heat": 72,
-      "note": "League football",
-      "homeBadge": "https://crests.football-data.org/78.png",
-      "awayBadge": "https://crests.football-data.org/79.png",
-      "homeScore": 4,
-      "awayScore": 0,
-      "status": "FT"
+      "status": "Postponed",
+      "tv": null
     },
     {
       "id": "fd-564679",
@@ -618,7 +636,26 @@
       "awayBadge": "https://crests.football-data.org/559.png",
       "homeScore": 0,
       "awayScore": 1,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
+    },
+    {
+      "id": "fd-564684",
+      "date": "2026-09-16",
+      "time": "20:00",
+      "kickoff": "2026-09-16T17:00:00Z",
+      "competition": "La Liga",
+      "home": "Club Atlético de Madrid",
+      "away": "CA Osasuna",
+      "venue": "Venue TBA",
+      "heat": 72,
+      "note": "League football",
+      "homeBadge": "https://crests.football-data.org/78.png",
+      "awayBadge": "https://crests.football-data.org/79.png",
+      "homeScore": 4,
+      "awayScore": 0,
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "tsdb-2594839",
@@ -635,7 +672,8 @@
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/amvs371681106952.png",
       "homeScore": 2,
       "awayScore": 0,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "tsdb-2594868",
@@ -652,7 +690,8 @@
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/hj4kyc1781152436.png",
       "homeScore": 0,
       "awayScore": 2,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "tsdb-2594889",
@@ -669,7 +708,8 @@
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/ucze1y1601404699.png",
       "homeScore": 2,
       "awayScore": 1,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-564687",
@@ -686,7 +726,8 @@
       "awayBadge": "https://crests.football-data.org/5335.png",
       "homeScore": 7,
       "awayScore": 2,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-564686",
@@ -703,7 +744,8 @@
       "awayBadge": "https://crests.football-data.org/82.png",
       "homeScore": 1,
       "awayScore": 0,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "tsdb-2594817",
@@ -720,7 +762,8 @@
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/8zfxyx1685597440.png",
       "homeScore": 4,
       "awayScore": 0,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "tsdb-2594851",
@@ -737,7 +780,8 @@
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/wk17od1688115265.png",
       "homeScore": 1,
       "awayScore": 3,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "tsdb-2594855",
@@ -754,7 +798,8 @@
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/byn6c21659694982.png",
       "homeScore": 1,
       "awayScore": 2,
-      "status": "FT"
+      "status": "FT",
+      "tv": null
     },
     {
       "id": "fd-564683",
@@ -771,7 +816,12 @@
       "awayBadge": "https://crests.football-data.org/94.png",
       "homeScore": 1,
       "awayScore": 3,
-      "status": "FT"
+      "status": "FT",
+      "tv": {
+        "channel": "MAX Sport 4",
+        "source": "MAX Sport",
+        "sourceUrl": "https://maxsport.live/tv-guide/"
+      }
     },
     {
       "id": "tsdb-2482187",
@@ -788,7 +838,12 @@
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/xystvp1448806138.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": {
+        "channel": "MAX Sport 3",
+        "source": "MAX Sport",
+        "sourceUrl": "https://maxsport.live/tv-guide/"
+      }
     },
     {
       "id": "tsdb-2494047",
@@ -805,7 +860,12 @@
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/pbf4ul1782638263.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": {
+        "channel": "DIEMA SPORT 2",
+        "source": "DIEMA XTRA",
+        "sourceUrl": "https://diemaxtra.nova.bg/diemasport2/schedule"
+      }
     },
     {
       "id": "tsdb-2506235",
@@ -822,7 +882,12 @@
       "awayBadge": "https://r2.thesportsdb.com/images/media/team/badge/e4vaw51655594332.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": {
+        "channel": "MAX Sport 4",
+        "source": "MAX Sport",
+        "sourceUrl": "https://maxsport.live/tv-guide/"
+      }
     },
     {
       "id": "fd-560587",
@@ -839,7 +904,12 @@
       "awayBadge": "https://crests.football-data.org/58.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": {
+        "channel": "DIEMA SPORT 2",
+        "source": "DIEMA XTRA",
+        "sourceUrl": "https://diemaxtra.nova.bg/diemasport2/schedule"
+      }
     },
     {
       "id": "fd-564693",
@@ -856,24 +926,8 @@
       "awayBadge": "https://crests.football-data.org/87.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
-    },
-    {
-      "id": "fd-558589",
-      "date": "2026-09-19",
-      "time": "16:00",
-      "kickoff": "2026-09-19T13:00:00Z",
-      "competition": "Serie A",
-      "home": "Udinese Calcio",
-      "away": "Cagliari Calcio",
-      "venue": "Venue TBA",
-      "heat": 72,
-      "note": "League football",
-      "homeBadge": "https://crests.football-data.org/115.png",
-      "awayBadge": "https://crests.football-data.org/104.png",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": null
     },
     {
       "id": "fd-558598",
@@ -890,24 +944,26 @@
       "awayBadge": "https://crests.football-data.org/586.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": null
     },
     {
-      "id": "fd-560586",
+      "id": "fd-558589",
       "date": "2026-09-19",
-      "time": "17:00",
-      "kickoff": "2026-09-19T14:00:00Z",
-      "competition": "Premier League",
-      "home": "Brighton & Hove Albion FC",
-      "away": "Arsenal FC",
+      "time": "16:00",
+      "kickoff": "2026-09-19T13:00:00Z",
+      "competition": "Serie A",
+      "home": "Udinese Calcio",
+      "away": "Cagliari Calcio",
       "venue": "Venue TBA",
-      "heat": 81,
+      "heat": 72,
       "note": "League football",
-      "homeBadge": "https://crests.football-data.org/397.png",
-      "awayBadge": "https://crests.football-data.org/57.png",
+      "homeBadge": "https://crests.football-data.org/115.png",
+      "awayBadge": "https://crests.football-data.org/104.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": null
     },
     {
       "id": "fd-560588",
@@ -924,7 +980,8 @@
       "awayBadge": "https://crests.football-data.org/322.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": null
     },
     {
       "id": "fd-560584",
@@ -941,7 +998,30 @@
       "awayBadge": "https://crests.football-data.org/349.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": null
+    },
+    {
+      "id": "fd-560586",
+      "date": "2026-09-19",
+      "time": "17:00",
+      "kickoff": "2026-09-19T14:00:00Z",
+      "competition": "Premier League",
+      "home": "Brighton & Hove Albion FC",
+      "away": "Arsenal FC",
+      "venue": "Venue TBA",
+      "heat": 81,
+      "note": "League football",
+      "homeBadge": "https://crests.football-data.org/397.png",
+      "awayBadge": "https://crests.football-data.org/57.png",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "NS",
+      "tv": {
+        "channel": "DIEMA SPORT 2",
+        "source": "DIEMA XTRA",
+        "sourceUrl": "https://diemaxtra.nova.bg/diemasport2/schedule"
+      }
     },
     {
       "id": "fd-564691",
@@ -958,7 +1038,8 @@
       "awayBadge": "https://crests.football-data.org/263.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": null
     },
     {
       "id": "fd-558593",
@@ -975,7 +1056,8 @@
       "awayBadge": "https://crests.football-data.org/108.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": null
     },
     {
       "id": "fd-560589",
@@ -992,7 +1074,12 @@
       "awayBadge": "https://crests.football-data.org/1076.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": {
+        "channel": "DIEMA SPORT 2",
+        "source": "DIEMA XTRA",
+        "sourceUrl": "https://diemaxtra.nova.bg/diemasport2/schedule"
+      }
     },
     {
       "id": "fd-564694",
@@ -1009,7 +1096,8 @@
       "awayBadge": "https://crests.football-data.org/5335.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": null
     },
     {
       "id": "fd-558594",
@@ -1026,7 +1114,12 @@
       "awayBadge": "https://crests.football-data.org/110.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": {
+        "channel": "MAX Sport 3",
+        "source": "MAX Sport",
+        "sourceUrl": "https://maxsport.live/tv-guide/"
+      }
     },
     {
       "id": "fd-564690",
@@ -1043,7 +1136,12 @@
       "awayBadge": "https://crests.football-data.org/81.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": {
+        "channel": "MAX Sport 4",
+        "source": "MAX Sport",
+        "sourceUrl": "https://maxsport.live/tv-guide/"
+      }
     },
     {
       "id": "fd-558591",
@@ -1060,7 +1158,12 @@
       "awayBadge": "https://crests.football-data.org/113.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": {
+        "channel": "MAX Sport 3",
+        "source": "MAX Sport",
+        "sourceUrl": "https://maxsport.live/tv-guide/"
+      }
     },
     {
       "id": "fd-564697",
@@ -1077,24 +1180,8 @@
       "awayBadge": "https://crests.football-data.org/84.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
-    },
-    {
-      "id": "fd-558592",
-      "date": "2026-09-20",
-      "time": "16:00",
-      "kickoff": "2026-09-20T13:00:00Z",
-      "competition": "Serie A",
-      "home": "Frosinone Calcio",
-      "away": "Como 1907",
-      "venue": "Venue TBA",
-      "heat": 72,
-      "note": "League football",
-      "homeBadge": "https://crests.football-data.org/470.png",
-      "awayBadge": "https://crests.football-data.org/7397.png",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": null
     },
     {
       "id": "fd-558590",
@@ -1111,7 +1198,26 @@
       "awayBadge": "https://crests.football-data.org/107.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": null
+    },
+    {
+      "id": "fd-558592",
+      "date": "2026-09-20",
+      "time": "16:00",
+      "kickoff": "2026-09-20T13:00:00Z",
+      "competition": "Serie A",
+      "home": "Frosinone Calcio",
+      "away": "Como 1907",
+      "venue": "Venue TBA",
+      "heat": 72,
+      "note": "League football",
+      "homeBadge": "https://crests.football-data.org/470.png",
+      "awayBadge": "https://crests.football-data.org/7397.png",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "NS",
+      "tv": null
     },
     {
       "id": "fd-560582",
@@ -1128,7 +1234,12 @@
       "awayBadge": "https://crests.football-data.org/64.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": {
+        "channel": "DIEMA SPORT 2",
+        "source": "DIEMA XTRA",
+        "sourceUrl": "https://diemaxtra.nova.bg/diemasport2/schedule"
+      }
     },
     {
       "id": "fd-560590",
@@ -1145,7 +1256,12 @@
       "awayBadge": "https://crests.football-data.org/71.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": {
+        "channel": "DIEMA SPORT 3",
+        "source": "DIEMA XTRA",
+        "sourceUrl": "https://diemaxtra.nova.bg/diemasport3/schedule"
+      }
     },
     {
       "id": "fd-560585",
@@ -1162,7 +1278,8 @@
       "awayBadge": "https://crests.football-data.org/354.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": null
     },
     {
       "id": "fd-564688",
@@ -1179,7 +1296,12 @@
       "awayBadge": "https://crests.football-data.org/86.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": {
+        "channel": "MAX Sport 4",
+        "source": "MAX Sport",
+        "sourceUrl": "https://maxsport.live/tv-guide/"
+      }
     },
     {
       "id": "fd-560583",
@@ -1196,7 +1318,12 @@
       "awayBadge": "https://crests.football-data.org/66.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": {
+        "channel": "DIEMA SPORT 2",
+        "source": "DIEMA XTRA",
+        "sourceUrl": "https://diemaxtra.nova.bg/diemasport2/schedule"
+      }
     },
     {
       "id": "fd-558595",
@@ -1213,24 +1340,12 @@
       "awayBadge": "https://crests.football-data.org/102.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
-    },
-    {
-      "id": "fd-564696",
-      "date": "2026-09-20",
-      "time": "19:30",
-      "kickoff": "2026-09-20T16:30:00Z",
-      "competition": "La Liga",
-      "home": "Villarreal CF",
-      "away": "Levante UD",
-      "venue": "Venue TBA",
-      "heat": 72,
-      "note": "League football",
-      "homeBadge": "https://crests.football-data.org/94.png",
-      "awayBadge": "https://crests.football-data.org/88.png",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": {
+        "channel": "MAX Sport 3",
+        "source": "MAX Sport",
+        "sourceUrl": "https://maxsport.live/tv-guide/"
+      }
     },
     {
       "id": "fd-564695",
@@ -1247,7 +1362,30 @@
       "awayBadge": "https://crests.football-data.org/90.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": null
+    },
+    {
+      "id": "fd-564696",
+      "date": "2026-09-20",
+      "time": "19:30",
+      "kickoff": "2026-09-20T16:30:00Z",
+      "competition": "La Liga",
+      "home": "Villarreal CF",
+      "away": "Levante UD",
+      "venue": "Venue TBA",
+      "heat": 72,
+      "note": "League football",
+      "homeBadge": "https://crests.football-data.org/94.png",
+      "awayBadge": "https://crests.football-data.org/88.png",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "NS",
+      "tv": {
+        "channel": "MAX Sport 1",
+        "source": "MAX Sport",
+        "sourceUrl": "https://maxsport.live/tv-guide/"
+      }
     },
     {
       "id": "fd-558597",
@@ -1264,7 +1402,12 @@
       "awayBadge": "https://crests.football-data.org/5890.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": {
+        "channel": "MAX Sport 3",
+        "source": "MAX Sport",
+        "sourceUrl": "https://maxsport.live/tv-guide/"
+      }
     },
     {
       "id": "fd-564689",
@@ -1281,7 +1424,8 @@
       "awayBadge": "https://crests.football-data.org/92.png",
       "homeScore": null,
       "awayScore": null,
-      "status": "NS"
+      "status": "NS",
+      "tv": null
     }
   ]
 }
