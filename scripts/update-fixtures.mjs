@@ -16,6 +16,14 @@ const SPORTS_DB_LEAGUES = [
   { id: '4332', name: 'Serie A' },
   { id: '4335', name: 'La Liga' },
 ];
+const TV_SOURCES = {
+  maxSport: { url: 'https://maxsport.live/tv-guide/', channels: { 340: 'MAX Sport 1', 110: 'MAX Sport 2', 100: 'MAX Sport 3', 90: 'MAX Sport 4' } },
+  diema: [
+    { url: 'https://diemaxtra.nova.bg/diemasport/schedule', channel: 'DIEMA SPORT' },
+    { url: 'https://diemaxtra.nova.bg/diemasport2/schedule', channel: 'DIEMA SPORT 2' },
+    { url: 'https://diemaxtra.nova.bg/diemasport3/schedule', channel: 'DIEMA SPORT 3' },
+  ],
+};
 
 const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 
@@ -61,6 +69,131 @@ function shortStatus(status, hasScore) {
     CANCELLED: 'Cancelled',
   };
   return statuses[status] || (hasScore ? 'FT' : 'NS');
+}
+
+function decodeHtml(value) {
+  return value.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#8211;|&ndash;/g, '-').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function transliterate(value) {
+  const map = { а:'a',б:'b',в:'v',г:'g',д:'d',е:'e',ж:'zh',з:'z',и:'i',й:'y',к:'k',л:'l',м:'m',н:'n',о:'o',п:'p',р:'r',с:'s',т:'t',у:'u',ф:'f',х:'h',ц:'ts',ч:'ch',ш:'sh',щ:'sht',ъ:'a',ь:'',ю:'yu',я:'ya' };
+  return [...value.toLowerCase()].map((letter) => map[letter] ?? letter).join('');
+}
+
+function normalizedTeam(value) {
+  return transliterate(value).normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\b(fc|cf|afc|ac|calcio|club|ud|rcd|us|ss|fk|sk)\b/g, ' ').replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function editDistance(left, right) {
+  const row = Array.from({ length: right.length + 1 }, (_, index) => index);
+  for (let i = 1; i <= left.length; i += 1) {
+    let diagonal = row[0]; row[0] = i;
+    for (let j = 1; j <= right.length; j += 1) {
+      const above = row[j];
+      row[j] = Math.min(row[j] + 1, row[j - 1] + 1, diagonal + (left[i - 1] === right[j - 1] ? 0 : 1));
+      diagonal = above;
+    }
+  }
+  return row[right.length];
+}
+
+function teamSimilarity(left, right) {
+  const a = normalizedTeam(left); const b = normalizedTeam(right);
+  if (!a || !b) return 0;
+  if (a.includes(b) || b.includes(a)) return Math.min(a.length, b.length) / Math.max(a.length, b.length);
+  return 1 - editDistance(a, b) / Math.max(a.length, b.length);
+}
+
+function listingDate(dayMonth) {
+  const [day, month] = dayMonth.split('.').map(Number);
+  const now = new Date();
+  let year = Number(new Intl.DateTimeFormat('en', { timeZone: TIMEZONE, year: 'numeric' }).format(now));
+  const currentMonth = Number(new Intl.DateTimeFormat('en', { timeZone: TIMEZONE, month: 'numeric' }).format(now));
+  if (currentMonth === 12 && month === 1) year += 1;
+  if (currentMonth === 1 && month === 12) year -= 1;
+  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+}
+
+function parseTeams(title) {
+  const cleaned = decodeHtml(title).replace(/^ПРЯКО,?\s*/i, '').replace(/^LIVE,?\s*/i, '');
+  const match = cleaned.match(/(?:^|:\s*)([^:]+?)\s+-\s+([^:]+)$/);
+  return match ? [match[1].trim(), match[2].trim()] : null;
+}
+
+function parseMaxSport(html) {
+  const listings = [];
+  for (const [id, channel] of Object.entries(TV_SOURCES.maxSport.channels)) {
+    const marker = `id="tv-${id}-panel-`;
+    let position = html.indexOf(marker);
+    while (position >= 0) {
+      const date = html.slice(position + marker.length, position + marker.length + 5);
+      const next = html.indexOf('id="tv-', position + marker.length);
+      const panel = html.slice(position, next < 0 ? html.length : next);
+      const pattern = /<div class="guides-item guides-live">[\s\S]*?<div class="guides-item-time">\s*([^<]+)[\s\S]*?<div class="guides-item-title">([\s\S]*?)<\/div>/g;
+      for (const match of panel.matchAll(pattern)) {
+        const teams = parseTeams(match[2]);
+        if (teams) listings.push({ date: listingDate(date), time: match[1].trim(), teams, channel, source: 'MAX Sport', sourceUrl: TV_SOURCES.maxSport.url });
+      }
+      position = next;
+    }
+  }
+  return listings;
+}
+
+const bgMonths = { ян:1, фев:2, март:3, апр:4, май:5, юни:6, юли:7, авг:8, септ:9, окт:10, ное:11, дек:12 };
+function parseDiema(html, source) {
+  const dates = new Map([...html.matchAll(/href="#([a-z]+)"[\s\S]*?<span class="date">(\d+)\s+([^<]+)/g)].map((match) => [match[1], `${String(match[2]).padStart(2, '0')}.${String(bgMonths[match[3].trim().slice(0, 4)]).padStart(2, '0')}`]));
+  const listings = [];
+  for (const [dayId, dayMonth] of dates) {
+    const marker = `class="tab-pane fade`;
+    const idPosition = html.indexOf(`id="${dayId}"`);
+    if (idPosition < 0) continue;
+    const start = html.lastIndexOf(marker, idPosition);
+    const next = html.indexOf(marker, idPosition + dayId.length);
+    const panel = html.slice(start, next < 0 ? html.length : next);
+    const pattern = /<li>[\s\S]*?<p class="time">\s*([^<]+)<\/p>[\s\S]*?<p class="title">([\s\S]*?)<\/p>[\s\S]*?<p class="description">([\s\S]*?)<\/p>[\s\S]*?<\/li>/g;
+    for (const match of panel.matchAll(pattern)) {
+      if (!/директно/i.test(decodeHtml(match[3]))) continue;
+      const teams = parseTeams(match[2]);
+      if (teams) listings.push({ date: listingDate(dayMonth), time: match[1].trim().replace('.', ':'), teams, channel: source.channel, source: 'DIEMA XTRA', sourceUrl: source.url });
+    }
+  }
+  return listings;
+}
+
+async function fetchBulgarianTv() {
+  const listings = [];
+  try {
+    const response = await fetch(TV_SOURCES.maxSport.url, { headers: { accept: 'text/html', 'user-agent': 'Matchday/1.0 (+https://matchday.mincho.dev)' } });
+    if (response.ok) listings.push(...parseMaxSport(await response.text()));
+  } catch (error) { console.warn(`MAX Sport schedule: ${error.message}`); }
+  for (const source of TV_SOURCES.diema) {
+    try {
+      const response = await fetch(source.url, { headers: { accept: 'text/html', 'user-agent': 'Matchday/1.0 (+https://matchday.mincho.dev)' } });
+      if (response.ok) listings.push(...parseDiema(await response.text(), source));
+    } catch (error) { console.warn(`${source.channel} schedule: ${error.message}`); }
+  }
+  for (const date of dateList.slice(7)) {
+    try {
+      const response = await fetch(`https://www.thesportsdb.com/api/v1/json/123/eventstv.php?d=${date}&s=Soccer&a=Bulgaria`, { headers: { accept: 'application/json' } });
+      if (!response.ok) continue;
+      const data = await response.json();
+      for (const event of data.tvevents ?? []) {
+        const teams = parseTeams(event.strEvent?.replace(' vs ', ' - ') ?? '');
+        if (teams) listings.push({ date, time: (event.strTime ?? '').slice(0, 5), teams, channel: event.strChannel, source: 'TheSportsDB', sourceUrl: 'https://www.thesportsdb.com/' });
+      }
+    } catch (error) { console.warn(`TheSportsDB TV ${date}: ${error.message}`); }
+  }
+  return listings;
+}
+
+function attachTv(fixtures, listings) {
+  return fixtures.map((fixture) => {
+    const candidates = listings.filter((listing) => listing.date === fixture.date && teamSimilarity(fixture.home, listing.teams[0]) >= .55 && teamSimilarity(fixture.away, listing.teams[1]) >= .55);
+    const minutes = (time) => { const [hour, minute] = time.split(':').map(Number); return hour * 60 + minute; };
+    const best = candidates.sort((a, b) => Math.abs(minutes(a.time) - minutes(fixture.time)) - Math.abs(minutes(b.time) - minutes(fixture.time)))[0];
+    return { ...fixture, tv: best ? { channel: best.channel, source: best.source, sourceUrl: best.sourceUrl } : null };
+  });
 }
 
 function mapFootballDataMatch(match) {
@@ -184,7 +317,8 @@ const selected = preferMoreComplete(primary, fallback);
 const unique = new Map(selected
   .filter((fixture) => dates.has(fixture.date) && fixture.home && fixture.away)
   .map((fixture) => [`${fixture.competition}:${fixture.date}:${fixture.home}:${fixture.away}`, fixture]));
-const fixtures = [...unique.values()].sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
+const tvListings = await fetchBulgarianTv();
+const fixtures = attachTv([...unique.values()].sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`)), tvListings);
 
 if (!primary.length) throw new Error('No primary fixture data was returned; keeping the current archive.');
 await mkdir(new URL('../public/data/', import.meta.url), { recursive: true });
@@ -193,7 +327,7 @@ await writeFile(OUTPUT, `${JSON.stringify({
   timezone: TIMEZONE,
   from: dateList[0],
   to: dateList.at(-1),
-  sources: ['football-data.org', 'TheSportsDB completeness fallback'],
+  sources: ['football-data.org', 'TheSportsDB completeness fallback', 'MAX Sport and DIEMA official TV schedules'],
   fixtures,
 }, null, 2)}\n`);
 console.log(`Saved ${fixtures.length} fixtures from ${dateList[0]} through ${dateList.at(-1)}.`);
