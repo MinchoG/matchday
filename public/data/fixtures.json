@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-19T01:11:43.328Z",
+  "generatedAt": "2026-09-19T09:29:51.558Z",
   "timezone": "Europe/Sofia",
   "from": "2026-09-12",
   "to": "2026-09-26",
@@ -46,6 +46,24 @@
       "tv": null
     },
     {
+      "id": "fd-560574",
+      "date": "2026-09-12",
+      "time": "17:00",
+      "kickoff": "2026-09-12T14:00:00Z",
+      "competition": "Premier League",
+      "home": "Aston Villa FC",
+      "away": "Nottingham Forest FC",
+      "venue": "Venue TBA",
+      "heat": 72,
+      "note": "League football",
+      "homeBadge": "https://crests.football-data.org/58.png",
+      "awayBadge": "https://crests.football-data.org/351.png",
+      "homeScore": 1,
+      "awayScore": 2,
+      "status": "FT",
+      "tv": null
+    },
+    {
       "id": "fd-560576",
       "date": "2026-09-12",
       "time": "17:00",
@@ -78,24 +96,6 @@
       "awayBadge": "https://crests.football-data.org/349.png",
       "homeScore": 2,
       "awayScore": 3,
-      "status": "FT",
-      "tv": null
-    },
-    {
-      "id": "fd-560574",
-      "date": "2026-09-12",
-      "time": "17:00",
-      "kickoff": "2026-09-12T14:00:00Z",
-      "competition": "Premier League",
-      "home": "Aston Villa FC",
-      "away": "Nottingham Forest FC",
-      "venue": "Venue TBA",
-      "heat": 72,
-      "note": "League football",
-      "homeBadge": "https://crests.football-data.org/58.png",
-      "awayBadge": "https://crests.football-data.org/351.png",
-      "homeScore": 1,
-      "awayScore": 2,
       "status": "FT",
       "tv": null
     },
@@ -803,11 +803,7 @@
       "homeScore": 3,
       "awayScore": 0,
       "status": "FT",
-      "tv": {
-        "channel": "DIEMA SPORT 2",
-        "source": "DIEMA XTRA",
-        "sourceUrl": "https://diemaxtra.nova.bg/diemasport2/schedule"
-      }
+      "tv": null
     },
     {
       "id": "fd-564692",
@@ -1042,6 +1038,24 @@
       "tv": null
     },
     {
+      "id": "fd-558590",
+      "date": "2026-09-20",
+      "time": "16:00",
+      "kickoff": "2026-09-20T13:00:00Z",
+      "competition": "Serie A",
+      "home": "Parma Calcio 1913",
+      "away": "Genoa CFC",
+      "venue": "Venue TBA",
+      "heat": 72,
+      "note": "League football",
+      "homeBadge": "https://crests.football-data.org/112.png",
+      "awayBadge": "https://crests.football-data.org/107.png",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "NS",
+      "tv": null
+    },
+    {
       "id": "fd-558592",
       "date": "2026-09-20",
       "time": "16:00",
@@ -1060,18 +1074,18 @@
       "tv": null
     },
     {
-      "id": "fd-558590",
+      "id": "fd-560585",
       "date": "2026-09-20",
       "time": "16:00",
       "kickoff": "2026-09-20T13:00:00Z",
-      "competition": "Serie A",
-      "home": "Parma Calcio 1913",
-      "away": "Genoa CFC",
+      "competition": "Premier League",
+      "home": "Leeds United FC",
+      "away": "Crystal Palace FC",
       "venue": "Venue TBA",
       "heat": 72,
       "note": "League football",
-      "homeBadge": "https://crests.football-data.org/112.png",
-      "awayBadge": "https://crests.football-data.org/107.png",
+      "homeBadge": "https://crests.football-data.org/341.png",
+      "awayBadge": "https://crests.football-data.org/354.png",
       "homeScore": null,
       "awayScore": null,
       "status": "NS",
@@ -1098,24 +1112,6 @@
         "source": "DIEMA XTRA",
         "sourceUrl": "https://diemaxtra.nova.bg/diemasport2/schedule"
       }
-    },
-    {
-      "id": "fd-560585",
-      "date": "2026-09-20",
-      "time": "16:00",
-      "kickoff": "2026-09-20T13:00:00Z",
-      "competition": "Premier League",
-      "home": "Leeds United FC",
-      "away": "Crystal Palace FC",
-      "venue": "Venue TBA",
-      "heat": 72,
-      "note": "League football",
-      "homeBadge": "https://crests.football-data.org/341.png",
-      "awayBadge": "https://crests.football-data.org/354.png",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "NS",
-      "tv": null
     },
     {
       "id": "fd-560590",
