@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-22T01:37:57.381Z",
+  "generatedAt": "2026-09-22T09:57:08.480Z",
   "timezone": "Europe/Sofia",
   "from": "2026-09-15",
   "to": "2026-09-29",
@@ -388,6 +388,24 @@
       "tv": null
     },
     {
+      "id": "fd-560588",
+      "date": "2026-09-19",
+      "time": "17:00",
+      "kickoff": "2026-09-19T14:00:00Z",
+      "competition": "Premier League",
+      "home": "Newcastle United FC",
+      "away": "Hull City AFC",
+      "venue": "Venue TBA",
+      "heat": 72,
+      "note": "League football",
+      "homeBadge": "https://crests.football-data.org/67.png",
+      "awayBadge": "https://crests.football-data.org/322.png",
+      "homeScore": 2,
+      "awayScore": 1,
+      "status": "FT",
+      "tv": null
+    },
+    {
       "id": "fd-560584",
       "date": "2026-09-19",
       "time": "17:00",
@@ -420,24 +438,6 @@
       "awayBadge": "https://crests.football-data.org/57.png",
       "homeScore": 3,
       "awayScore": 0,
-      "status": "FT",
-      "tv": null
-    },
-    {
-      "id": "fd-560588",
-      "date": "2026-09-19",
-      "time": "17:00",
-      "kickoff": "2026-09-19T14:00:00Z",
-      "competition": "Premier League",
-      "home": "Newcastle United FC",
-      "away": "Hull City AFC",
-      "venue": "Venue TBA",
-      "heat": 72,
-      "note": "League football",
-      "homeBadge": "https://crests.football-data.org/67.png",
-      "awayBadge": "https://crests.football-data.org/322.png",
-      "homeScore": 2,
-      "awayScore": 1,
       "status": "FT",
       "tv": null
     },
