@@ -1,104 +1,14 @@
 {
-  "generatedAt": "2026-09-21T10:41:51.757Z",
+  "generatedAt": "2026-09-22T01:37:57.381Z",
   "timezone": "Europe/Sofia",
-  "from": "2026-09-14",
-  "to": "2026-09-28",
+  "from": "2026-09-15",
+  "to": "2026-09-29",
   "sources": [
     "football-data.org",
     "TheSportsDB completeness fallback",
     "MAX Sport and DIEMA official TV schedules"
   ],
   "fixtures": [
-    {
-      "id": "fd-558603",
-      "date": "2026-09-14",
-      "time": "19:30",
-      "kickoff": "2026-09-14T16:30:00Z",
-      "competition": "Serie A",
-      "home": "Torino FC",
-      "away": "AS Roma",
-      "venue": "Venue TBA",
-      "heat": 72,
-      "note": "League football",
-      "homeBadge": "https://crests.football-data.org/586.png",
-      "awayBadge": "https://crests.football-data.org/100.png",
-      "homeScore": 0,
-      "awayScore": 2,
-      "status": "FT",
-      "tv": null
-    },
-    {
-      "id": "fd-558602",
-      "date": "2026-09-14",
-      "time": "19:30",
-      "kickoff": "2026-09-14T16:30:00Z",
-      "competition": "Serie A",
-      "home": "Como 1907",
-      "away": "Parma Calcio 1913",
-      "venue": "Venue TBA",
-      "heat": 72,
-      "note": "League football",
-      "homeBadge": "https://crests.football-data.org/7397.png",
-      "awayBadge": "https://crests.football-data.org/112.png",
-      "homeScore": 2,
-      "awayScore": 1,
-      "status": "FT",
-      "tv": null
-    },
-    {
-      "id": "fd-558601",
-      "date": "2026-09-14",
-      "time": "21:45",
-      "kickoff": "2026-09-14T18:45:00Z",
-      "competition": "Serie A",
-      "home": "FC Internazionale Milano",
-      "away": "Udinese Calcio",
-      "venue": "Venue TBA",
-      "heat": 90,
-      "note": "League football",
-      "homeBadge": "https://crests.football-data.org/108.png",
-      "awayBadge": "https://crests.football-data.org/115.png",
-      "homeScore": 5,
-      "awayScore": 3,
-      "status": "FT",
-      "tv": null
-    },
-    {
-      "id": "fd-564671",
-      "date": "2026-09-14",
-      "time": "22:00",
-      "kickoff": "2026-09-14T19:00:00Z",
-      "competition": "La Liga",
-      "home": "Villarreal CF",
-      "away": "Real Betis Balompié",
-      "venue": "Venue TBA",
-      "heat": 72,
-      "note": "League football",
-      "homeBadge": "https://crests.football-data.org/94.png",
-      "awayBadge": "https://crests.football-data.org/90.png",
-      "homeScore": 1,
-      "awayScore": 2,
-      "status": "FT",
-      "tv": null
-    },
-    {
-      "id": "fd-560579",
-      "date": "2026-09-14",
-      "time": "22:00",
-      "kickoff": "2026-09-14T19:00:00Z",
-      "competition": "Premier League",
-      "home": "Leeds United FC",
-      "away": "Newcastle United FC",
-      "venue": "Venue TBA",
-      "heat": 72,
-      "note": "League football",
-      "homeBadge": "https://crests.football-data.org/341.png",
-      "awayBadge": "https://crests.football-data.org/67.png",
-      "homeScore": 4,
-      "awayScore": 1,
-      "status": "FT",
-      "tv": null
-    },
     {
       "id": "fd-564678",
       "date": "2026-09-15",
@@ -442,24 +352,6 @@
       "tv": null
     },
     {
-      "id": "fd-558589",
-      "date": "2026-09-19",
-      "time": "16:00",
-      "kickoff": "2026-09-19T13:00:00Z",
-      "competition": "Serie A",
-      "home": "Udinese Calcio",
-      "away": "Cagliari Calcio",
-      "venue": "Venue TBA",
-      "heat": 72,
-      "note": "League football",
-      "homeBadge": "https://crests.football-data.org/115.png",
-      "awayBadge": "https://crests.football-data.org/104.png",
-      "homeScore": 0,
-      "awayScore": 1,
-      "status": "FT",
-      "tv": null
-    },
-    {
       "id": "fd-558598",
       "date": "2026-09-19",
       "time": "16:00",
@@ -473,6 +365,24 @@
       "homeBadge": "https://crests.football-data.org/103.png",
       "awayBadge": "https://crests.football-data.org/586.png",
       "homeScore": 1,
+      "awayScore": 1,
+      "status": "FT",
+      "tv": null
+    },
+    {
+      "id": "fd-558589",
+      "date": "2026-09-19",
+      "time": "16:00",
+      "kickoff": "2026-09-19T13:00:00Z",
+      "competition": "Serie A",
+      "home": "Udinese Calcio",
+      "away": "Cagliari Calcio",
+      "venue": "Venue TBA",
+      "heat": 72,
+      "note": "League football",
+      "homeBadge": "https://crests.football-data.org/115.png",
+      "awayBadge": "https://crests.football-data.org/104.png",
+      "homeScore": 0,
       "awayScore": 1,
       "status": "FT",
       "tv": null
@@ -655,11 +565,7 @@
       "homeScore": 1,
       "awayScore": 1,
       "status": "FT",
-      "tv": {
-        "channel": "MAX Sport 3",
-        "source": "MAX Sport",
-        "sourceUrl": "https://maxsport.live/tv-guide/"
-      }
+      "tv": null
     },
     {
       "id": "fd-564697",
@@ -716,6 +622,24 @@
       "tv": null
     },
     {
+      "id": "fd-560585",
+      "date": "2026-09-20",
+      "time": "16:00",
+      "kickoff": "2026-09-20T13:00:00Z",
+      "competition": "Premier League",
+      "home": "Leeds United FC",
+      "away": "Crystal Palace FC",
+      "venue": "Venue TBA",
+      "heat": 72,
+      "note": "League football",
+      "homeBadge": "https://crests.football-data.org/341.png",
+      "awayBadge": "https://crests.football-data.org/354.png",
+      "homeScore": 0,
+      "awayScore": 0,
+      "status": "FT",
+      "tv": null
+    },
+    {
       "id": "fd-560590",
       "date": "2026-09-20",
       "time": "16:00",
@@ -752,24 +676,6 @@
       "tv": null
     },
     {
-      "id": "fd-560585",
-      "date": "2026-09-20",
-      "time": "16:00",
-      "kickoff": "2026-09-20T13:00:00Z",
-      "competition": "Premier League",
-      "home": "Leeds United FC",
-      "away": "Crystal Palace FC",
-      "venue": "Venue TBA",
-      "heat": 72,
-      "note": "League football",
-      "homeBadge": "https://crests.football-data.org/341.png",
-      "awayBadge": "https://crests.football-data.org/354.png",
-      "homeScore": 0,
-      "awayScore": 0,
-      "status": "FT",
-      "tv": null
-    },
-    {
       "id": "fd-564688",
       "date": "2026-09-20",
       "time": "17:15",
@@ -785,11 +691,7 @@
       "homeScore": 2,
       "awayScore": 1,
       "status": "FT",
-      "tv": {
-        "channel": "MAX Sport 4",
-        "source": "MAX Sport",
-        "sourceUrl": "https://maxsport.live/tv-guide/"
-      }
+      "tv": null
     },
     {
       "id": "fd-560583",
@@ -825,11 +727,7 @@
       "homeScore": 2,
       "awayScore": 0,
       "status": "FT",
-      "tv": {
-        "channel": "MAX Sport 3",
-        "source": "MAX Sport",
-        "sourceUrl": "https://maxsport.live/tv-guide/"
-      }
+      "tv": null
     },
     {
       "id": "fd-564695",
@@ -865,11 +763,7 @@
       "homeScore": 3,
       "awayScore": 1,
       "status": "FT",
-      "tv": {
-        "channel": "MAX Sport 1",
-        "source": "MAX Sport",
-        "sourceUrl": "https://maxsport.live/tv-guide/"
-      }
+      "tv": null
     },
     {
       "id": "fd-558597",
@@ -887,11 +781,7 @@
       "homeScore": 3,
       "awayScore": 0,
       "status": "FT",
-      "tv": {
-        "channel": "MAX Sport 3",
-        "source": "MAX Sport",
-        "sourceUrl": "https://maxsport.live/tv-guide/"
-      }
+      "tv": null
     },
     {
       "id": "fd-564689",
