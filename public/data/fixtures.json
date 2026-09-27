@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-27T01:26:09.424Z",
+  "generatedAt": "2026-09-27T10:34:43.573Z",
   "timezone": "Europe/Sofia",
   "from": "2026-09-20",
   "to": "2026-10-04",
@@ -46,24 +46,6 @@
       "tv": null
     },
     {
-      "id": "fd-558590",
-      "date": "2026-09-20",
-      "time": "16:00",
-      "kickoff": "2026-09-20T13:00:00Z",
-      "competition": "Serie A",
-      "home": "Parma Calcio 1913",
-      "away": "Genoa CFC",
-      "venue": "Venue TBA",
-      "heat": 72,
-      "note": "League football",
-      "homeBadge": "https://crests.football-data.org/112.png",
-      "awayBadge": "https://crests.football-data.org/107.png",
-      "homeScore": 2,
-      "awayScore": 1,
-      "status": "FT",
-      "tv": null
-    },
-    {
       "id": "fd-558592",
       "date": "2026-09-20",
       "time": "16:00",
@@ -78,6 +60,24 @@
       "awayBadge": "https://crests.football-data.org/7397.png",
       "homeScore": 2,
       "awayScore": 0,
+      "status": "FT",
+      "tv": null
+    },
+    {
+      "id": "fd-558590",
+      "date": "2026-09-20",
+      "time": "16:00",
+      "kickoff": "2026-09-20T13:00:00Z",
+      "competition": "Serie A",
+      "home": "Parma Calcio 1913",
+      "away": "Genoa CFC",
+      "venue": "Venue TBA",
+      "heat": 72,
+      "note": "League football",
+      "homeBadge": "https://crests.football-data.org/112.png",
+      "awayBadge": "https://crests.football-data.org/107.png",
+      "homeScore": 2,
+      "awayScore": 1,
       "status": "FT",
       "tv": null
     },
