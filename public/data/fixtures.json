@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-04T02:36:29.607Z",
+  "generatedAt": "2026-10-04T11:08:00.683Z",
   "timezone": "Europe/Sofia",
   "from": "2026-09-27",
   "to": "2026-10-11",
@@ -43,7 +43,11 @@
       "homeScore": null,
       "awayScore": null,
       "status": "NS",
-      "tv": null
+      "tv": {
+        "channel": "DIEMA SPORT 2",
+        "source": "DIEMA XTRA",
+        "sourceUrl": "https://diemaxtra.nova.bg/diemasport2/schedule"
+      }
     },
     {
       "id": "fd-564698",
@@ -76,42 +80,6 @@
       "note": "League football",
       "homeBadge": "https://crests.football-data.org/107.png",
       "awayBadge": "https://crests.football-data.org/99.png",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "NS",
-      "tv": null
-    },
-    {
-      "id": "fd-560595",
-      "date": "2026-10-10",
-      "time": "17:00",
-      "kickoff": "2026-10-10T14:00:00Z",
-      "competition": "Premier League",
-      "home": "Chelsea FC",
-      "away": "AFC Bournemouth",
-      "venue": "Venue TBA",
-      "heat": 81,
-      "note": "League football",
-      "homeBadge": "https://crests.football-data.org/61.png",
-      "awayBadge": "https://crests.football-data.org/bournemouth.png",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "NS",
-      "tv": null
-    },
-    {
-      "id": "fd-560592",
-      "date": "2026-10-10",
-      "time": "17:00",
-      "kickoff": "2026-10-10T14:00:00Z",
-      "competition": "Premier League",
-      "home": "Sunderland AFC",
-      "away": "Brighton & Hove Albion FC",
-      "venue": "Venue TBA",
-      "heat": 72,
-      "note": "League football",
-      "homeBadge": "https://crests.football-data.org/71.png",
-      "awayBadge": "https://crests.football-data.org/397.png",
       "homeScore": null,
       "awayScore": null,
       "status": "NS",
@@ -151,7 +119,51 @@
       "homeScore": null,
       "awayScore": null,
       "status": "NS",
+      "tv": {
+        "channel": "DIEMA SPORT 3",
+        "source": "DIEMA XTRA",
+        "sourceUrl": "https://diemaxtra.nova.bg/diemasport3/schedule"
+      }
+    },
+    {
+      "id": "fd-560592",
+      "date": "2026-10-10",
+      "time": "17:00",
+      "kickoff": "2026-10-10T14:00:00Z",
+      "competition": "Premier League",
+      "home": "Sunderland AFC",
+      "away": "Brighton & Hove Albion FC",
+      "venue": "Venue TBA",
+      "heat": 72,
+      "note": "League football",
+      "homeBadge": "https://crests.football-data.org/71.png",
+      "awayBadge": "https://crests.football-data.org/397.png",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "NS",
       "tv": null
+    },
+    {
+      "id": "fd-560595",
+      "date": "2026-10-10",
+      "time": "17:00",
+      "kickoff": "2026-10-10T14:00:00Z",
+      "competition": "Premier League",
+      "home": "Chelsea FC",
+      "away": "AFC Bournemouth",
+      "venue": "Venue TBA",
+      "heat": 81,
+      "note": "League football",
+      "homeBadge": "https://crests.football-data.org/61.png",
+      "awayBadge": "https://crests.football-data.org/bournemouth.png",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "NS",
+      "tv": {
+        "channel": "DIEMA SPORT 2",
+        "source": "DIEMA XTRA",
+        "sourceUrl": "https://diemaxtra.nova.bg/diemasport2/schedule"
+      }
     },
     {
       "id": "fd-564699",
@@ -205,7 +217,11 @@
       "homeScore": null,
       "awayScore": null,
       "status": "NS",
-      "tv": null
+      "tv": {
+        "channel": "DIEMA SPORT 2",
+        "source": "DIEMA XTRA",
+        "sourceUrl": "https://diemaxtra.nova.bg/diemasport2/schedule"
+      }
     },
     {
       "id": "fd-564700",
