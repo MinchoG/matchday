@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  deployments: write
 
 concurrency:
   group: matchday-fixtures
@@ -39,8 +40,9 @@ jobs:
       - name: Build production site
         run: npm run build
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy dist --project-name=matchday --branch=main
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
