@@ -22,6 +22,9 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
       - name: Fetch the latest fixtures and scores
         run: node scripts/update-fixtures.mjs
         env:
@@ -33,3 +36,11 @@ jobs:
           git add public/data/fixtures.json
           git diff --cached --quiet || git commit -m "data: refresh fixtures and scores"
           git push
+      - name: Build production site
+        run: npm run build
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=matchday --branch=main
