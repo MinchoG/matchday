@@ -9,12 +9,12 @@ const FOOTBALL_DATA_CODES = new Map([
   ['SA', 'Serie A'],
   ['PD', 'La Liga'],
 ]);
-const SPORTS_DB_LEAGUES = [
-  { id: '4480', name: 'Champions League' },
-  { id: '4481', name: 'Europa League' },
-  { id: '4328', name: 'Premier League' },
-  { id: '4332', name: 'Serie A' },
-  { id: '4335', name: 'La Liga' },
+const ESPN_LEAGUES = [
+  { slug: 'uefa.champions', name: 'Champions League' },
+  { slug: 'uefa.europa', name: 'Europa League' },
+  { slug: 'eng.1', name: 'Premier League' },
+  { slug: 'ita.1', name: 'Serie A' },
+  { slug: 'esp.1', name: 'La Liga' },
 ];
 const TV_SOURCES = {
   maxSport: { url: 'https://maxsport.live/tv-guide/', channels: { 340: 'MAX Sport 1', 110: 'MAX Sport 2', 100: 'MAX Sport 3', 90: 'MAX Sport 4' } },
@@ -230,35 +230,69 @@ async function fetchFootballData(from, to) {
   return (data.matches ?? []).map(mapFootballDataMatch).filter(Boolean);
 }
 
-function mapSportsDbEvent(event, date, competition) {
-  const kickoff = event.strTimestamp ? (event.strTimestamp.endsWith('Z') ? event.strTimestamp : `${event.strTimestamp}Z`) : null;
-  const homeScore = event.intHomeScore == null ? null : Number(event.intHomeScore);
-  const awayScore = event.intAwayScore == null ? null : Number(event.intAwayScore);
+function mapEspnEvent(event, competition) {
+  const contest = event.competitions?.[0];
+  const kickoff = event.date || contest?.date;
+  const home = contest?.competitors?.find((team) => team.homeAway === 'home');
+  const away = contest?.competitors?.find((team) => team.homeAway === 'away');
+  if (!kickoff || !home?.team || !away?.team) return null;
+
+  const status = contest.status ?? event.status;
+  const started = status?.type?.state === 'in' || status?.type?.completed;
+  const score = (team) => started && Number.isFinite(Number(team.score)) ? Number(team.score) : null;
+  const homeScore = score(home);
+  const awayScore = score(away);
+  const description = status?.type?.description ?? '';
+  const matchStatus = status?.type?.completed
+    ? 'FT'
+    : status?.type?.state === 'in'
+      ? status?.type?.shortDetail || 'LIVE'
+      : /postponed/i.test(description)
+        ? 'Postponed'
+        : /cancelled/i.test(description)
+          ? 'Cancelled'
+          : 'NS';
   return {
-    id: `tsdb-${event.idEvent}`,
-    date,
-    time: kickoff ? timeInSofia(kickoff) : (event.strTime ?? '').slice(0, 5) || 'TBA',
+    id: `espn-${event.id}`,
+    date: dateInZone(new Date(kickoff)),
+    time: timeInSofia(kickoff),
     kickoff,
     competition,
-    home: event.strHomeTeam,
-    away: event.strAwayTeam,
-    venue: event.strVenue || 'Venue TBA',
-    heat: heatFor(event.strHomeTeam, event.strAwayTeam, competition),
+    home: home.team.displayName,
+    away: away.team.displayName,
+    venue: contest.venue?.fullName || event.venue?.fullName || 'Venue TBA',
+    heat: heatFor(home.team.displayName, away.team.displayName, competition),
     note: competition === 'Champions League' || competition === 'Europa League' ? 'European night' : 'League football',
-    homeBadge: event.strHomeTeamBadge || null,
-    awayBadge: event.strAwayTeamBadge || null,
+    homeBadge: home.team.logo || null,
+    awayBadge: away.team.logo || null,
     homeScore,
     awayScore,
-    status: event.strStatus || (homeScore != null && awayScore != null ? 'FT' : 'NS'),
+    status: matchStatus,
   };
 }
 
-async function fetchSportsDb(date, league) {
-  const url = `https://www.thesportsdb.com/api/v1/json/123/eventsday.php?d=${date}&l=${league.id}`;
+async function fetchEspn(year, league) {
+  const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${league.slug}/scoreboard?dates=${year}&limit=1000`;
   const response = await fetch(url, { headers: { accept: 'application/json' } });
-  if (!response.ok) throw new Error(`TheSportsDB returned ${response.status}`);
+  if (!response.ok) throw new Error(`ESPN returned ${response.status}`);
   const data = await response.json();
-  return (data.events ?? []).map((event) => mapSportsDbEvent(event, date, league.name));
+  if (!Array.isArray(data.events)) throw new Error(data.message || 'ESPN returned an invalid fixture response');
+  return data.events.map((event) => mapEspnEvent(event, league.name)).filter(Boolean);
+}
+
+async function fetchEspnFallback(dates) {
+  const years = new Set([...dates].map((date) => date.slice(0, 4)));
+  const requests = [...years].flatMap((year) => ESPN_LEAGUES.map(async (league) => {
+    try {
+      const fixtures = (await fetchEspn(year, league)).filter((fixture) => dates.has(fixture.date));
+      console.log(`ESPN ${league.name} ${year}: ${fixtures.length} matches in range`);
+      return fixtures;
+    } catch (error) {
+      console.warn(`ESPN ${league.name} ${year}: ${error.message}`);
+      return [];
+    }
+  }));
+  return (await Promise.all(requests)).flat();
 }
 
 async function existingFallback(dates) {
@@ -296,24 +330,9 @@ for (const [index, [from, to]] of windows.entries()) {
   if (index === 0) await delay(6_100);
 }
 
-const fallback = [];
-let fallbackFailures = 0;
-let fallbackRequests = 0;
-for (const date of dateList) {
-  for (const league of SPORTS_DB_LEAGUES) {
-    try {
-      fallback.push(...await fetchSportsDb(date, league));
-    } catch (error) {
-      fallbackFailures += 1;
-      console.warn(`${league.name} ${date}: ${error.message}`);
-    }
-    fallbackRequests += 1;
-    if (fallbackRequests < dateList.length * SPORTS_DB_LEAGUES.length) await delay(2_100);
-  }
-}
-
-if (fallbackFailures === dateList.length * SPORTS_DB_LEAGUES.length) fallback.push(...await existingFallback(dates));
-const selected = preferMoreComplete(primary, fallback);
+const fallback = await fetchEspnFallback(dates);
+const stored = await existingFallback(dates);
+const selected = preferMoreComplete(preferMoreComplete(primary, fallback), stored);
 const unique = new Map(selected
   .filter((fixture) => dates.has(fixture.date) && fixture.home && fixture.away)
   .map((fixture) => [`${fixture.competition}:${fixture.date}:${fixture.home}:${fixture.away}`, fixture]));
@@ -327,7 +346,7 @@ await writeFile(OUTPUT, `${JSON.stringify({
   timezone: TIMEZONE,
   from: dateList[0],
   to: dateList.at(-1),
-  sources: ['football-data.org', 'TheSportsDB completeness fallback', 'MAX Sport and DIEMA official TV schedules'],
+  sources: ['football-data.org', 'ESPN completeness fallback', 'MAX Sport and DIEMA official TV schedules'],
   fixtures,
 }, null, 2)}\n`);
 console.log(`Saved ${fixtures.length} fixtures from ${dateList[0]} through ${dateList.at(-1)}.`);
